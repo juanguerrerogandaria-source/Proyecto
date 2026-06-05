@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../database/db.php';
+require_once __DIR__ . '/conexcion_BD.php';
 
 $messages = [];
 $success = false;
@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </div>
     <?php endif; ?>
 
-    <form action="registrarse.php" method="post">
+    <form action="registro_usuario_BD.php" method="post">
         <label for="usuario">Usuario:</label>
         <input type="text" id="usuario" name="usuario" placeholder="Tu usuario" required>
 
