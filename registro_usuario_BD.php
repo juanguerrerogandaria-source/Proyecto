@@ -14,6 +14,13 @@ if ($contrasena !== $confirmar_contrasena) {
 // Encriptar contraseña
 $contrasena_hash = password_hash($contrasena, PASSWORD_DEFAULT);
 
+// Verificar si el email ya existe
+$check = mysqli_query($conexion, "SELECT email FROM usuarios WHERE email = '$correo'");
+
+if (mysqli_num_rows($check) > 0) {
+    die("El correo ya está registrado, ingrese otro");
+}
+
 $query = "INSERT INTO usuarios (usuario, email, password) VALUES (?, ?, ?)";
 $stmt = mysqli_prepare($conexion, $query);
 mysqli_stmt_bind_param($stmt, "sss", $nombre_completo, $correo, $contrasena_hash);
