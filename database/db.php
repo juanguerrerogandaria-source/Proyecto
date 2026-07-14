@@ -91,7 +91,7 @@ function get_all_cortes(): array
     $conexion = get_db_connection();
 
     try {
-        $resultado = $conexion->query("SELECT id, nombre, descripcion, precio, media_path, media_tipo FROM cortes ORDER BY id DESC");
+        $resultado = $conexion->query("SELECT id, nombre, categoria, descripcion, precio, media_path, media_tipo FROM cortes ORDER BY id DESC");
 
         return $resultado->fetch_all(MYSQLI_ASSOC);
     } finally {
@@ -99,13 +99,32 @@ function get_all_cortes(): array
     }
 }
 
-function create_corte(string $nombre, string $descripcion, float $precio, ?string $media_path, ?string $media_tipo): bool
+function get_cortes_por_categoria(string $categoria): array
 {
     $conexion = get_db_connection();
 
     try {
-        $stmt = $conexion->prepare("INSERT INTO cortes (nombre, descripcion, precio, media_path, media_tipo) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssdss", $nombre, $descripcion, $precio, $media_path, $media_tipo);
+        $stmt = $conexion->prepare("SELECT id, nombre, categoria, descripcion, precio, media_path, media_tipo FROM cortes WHERE categoria = ? ORDER BY id DESC");
+        $stmt->bind_param("s", $categoria);
+        $stmt->execute();
+
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    } finally {
+        $conexion->close();
+    }
+}
+
+function create_corte(string $nombre, string $categoria, string $descripcion, float $precio, ?string $media_path, ?string $media_tipo): bool
+{
+    if (!in_array($categoria, ['hombre', 'mujer'], true)) {
+        $categoria = 'hombre';
+    }
+
+    $conexion = get_db_connection();
+
+    try {
+        $stmt = $conexion->prepare("INSERT INTO cortes (nombre, categoria, descripcion, precio, media_path, media_tipo) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssdss", $nombre, $categoria, $descripcion, $precio, $media_path, $media_tipo);
 
         return $stmt->execute();
     } finally {

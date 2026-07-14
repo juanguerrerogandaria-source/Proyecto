@@ -392,6 +392,167 @@ footer .navbar__brand {
     margin-bottom: 14px;
 }
 
+/* ---------- Categorías (Hombre / Mujer) en la home ---------- */
+.categorias__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.categoria-card {
+    position: relative;
+    display: block;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    min-height: 260px;
+    display: flex;
+    align-items: flex-end;
+    padding: 32px;
+    transition: transform 0.25s, border-color 0.25s;
+}
+
+.categoria-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--accent-light);
+}
+
+.categoria-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 100%, var(--accent-glow), transparent 70%);
+    opacity: 0.6;
+    z-index: 0;
+}
+
+.categoria-card__contenido {
+    position: relative;
+    z-index: 1;
+}
+
+.categoria-card .icon-grande {
+    font-size: 2.6rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.categoria-card h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.4rem;
+    margin-bottom: 6px;
+}
+
+.categoria-card p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 520px) {
+    .categorias__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- Listado de cortes por categoría (cortes_hombre.php / cortes_mujer.php) ---------- */
+.page-header {
+    padding: 160px 24px 60px;
+    text-align: center;
+    background: radial-gradient(ellipse at 50% 0%, var(--accent-glow), transparent 65%), var(--bg);
+}
+
+.page-header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    margin-bottom: 12px;
+}
+
+.page-header p {
+    color: var(--text-muted);
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+.cortes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    padding: 60px 0 96px;
+}
+
+@media (max-width: 860px) {
+    .cortes-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 560px) {
+    .cortes-grid { grid-template-columns: 1fr; }
+}
+
+.corte-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.corte-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent-light);
+}
+
+.corte-card__media {
+    width: 100%;
+    height: 190px;
+    background: rgba(255, 255, 255, 0.03);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.corte-card__media img,
+.corte-card__media video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.corte-card__sin-media {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+}
+
+.corte-card__body {
+    padding: 22px;
+}
+
+.corte-card__body h3 {
+    font-size: 1.05rem;
+    margin-bottom: 6px;
+}
+
+.corte-card__body p {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    margin-bottom: 14px;
+}
+
+.corte-card__precio {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    color: var(--accent-light);
+    font-size: 1.15rem;
+}
+
+.vacio-cortes {
+    text-align: center;
+    color: var(--text-dim);
+    padding: 40px 24px 96px;
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 860px) {
     .about__grid,

@@ -90,29 +90,24 @@ $rol      = obtener_rol();
         <div class="container section">
             <p class="section__eyebrow">Lo que hacemos</p>
             <h2 class="section__title">Servicios</h2>
-            <p class="section__lead">Elegí tu experiencia. Reservá online y evitá esperas.</p>
+            <p class="section__lead">Elegí tu categoría y descubrí todos los cortes disponibles.</p>
 
-            <div class="services__grid">
-                <div class="service-card">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3v18M6 3a3 3 0 1 1 0 6M6 15a3 3 0 1 0 0 6M6 9l14 6M6 15l14-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    <h3>Corte clásico</h3>
-                    <p>Técnica de tijera y máquina, terminación con navaja.</p>
-                </div>
-                <div class="service-card">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12c0-4 3-8 8-8s8 4 8 8-3 8-8 8-8-4-8-8Z" /><path d="M9 12h6" stroke-linecap="round"/></svg>
-                    <h3>Diseño de barba</h3>
-                    <p>Perfilado, afeitado a navaja y tratamiento de hidratación.</p>
-                </div>
-                <div class="service-card">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M4 10h16" stroke-linecap="round"/></svg>
-                    <h3>Combo completo</h3>
-                    <p>Corte + barba + detalle facial. La experiencia completa.</p>
-                </div>
-                <div class="service-card">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2 3 7v6c0 5 4 8 9 9 5-1 9-4 9-9V7l-9-5Z"/></svg>
-                    <h3>Diseño &amp; líneas</h3>
-                    <p>Dibujos, degradados y líneas de precisión a pedido.</p>
-                </div>
+            <div class="categorias__grid">
+                <a href="cortes_hombre.php" class="categoria-card">
+                    <div class="categoria-card__contenido">
+                        <span class="icon-grande">&#9986;&#65039;</span>
+                        <h3>Hombre</h3>
+                        <p>Fades, cortes clásicos, diseño de barba y más.</p>
+                    </div>
+                </a>
+
+                <a href="cortes_mujer.php" class="categoria-card">
+                    <div class="categoria-card__contenido">
+                        <span class="icon-grande">&#128132;</span>
+                        <h3>Mujer</h3>
+                        <p>Cortes, color, peinados y tratamientos.</p>
+                    </div>
+                </a>
             </div>
         </div>
     </section>
@@ -125,22 +120,18 @@ $rol      = obtener_rol();
         <div class="hours">
             <div>
                 <span>Lunes a viernes</span>
-                10:00 – 20:00
+                18:30 – 21:30
             </div>
             <div>
-                <span>Sábados</span>
-                09:00 – 18:00
-            </div>
-            <div>
-                <span>Domingos</span>
-                Cerrado
+                <span>Sábados y Domingos</span>
+                08:30 – 20:30
             </div>
         </div>
     </section>
 
     <footer>
         <a href="pagina_principal.php" class="navbar__brand">
-            <img src="../../public/img/tuyasbarber.jpeg" alt="Tuya's Barber" style="height:32px;width:32px;">
+            <img src="../../public/img/tuyasbarber.png" alt="Tuya's Barber" style="height:32px;width:32px;">
             Tuya's Barber
         </a>
         <p>&copy; <?= date('Y') ?> Tuya's Barber. Todos los derechos reservados.</p>

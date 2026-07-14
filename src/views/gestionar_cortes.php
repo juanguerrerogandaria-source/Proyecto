@@ -16,6 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($accion === "crear") {
         $nombre      = trim($_POST["nombre"] ?? "");
+        $categoria   = $_POST["categoria"] ?? "";
         $descripcion = trim($_POST["descripcion"] ?? "");
         $precio      = (float) str_replace(",", ".", $_POST["precio"] ?? "0");
 
@@ -24,6 +25,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if (empty($nombre)) {
             $mensaje  = "El nombre del corte es obligatorio.";
+            $es_error = true;
+        } elseif (!in_array($categoria, ['hombre', 'mujer'], true)) {
+            $mensaje  = "Elegí si el corte es para hombre o para mujer.";
             $es_error = true;
         } elseif ($precio <= 0) {
             $mensaje  = "El precio tiene que ser mayor a 0.";
@@ -62,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         if (!$es_error) {
-            if (create_corte($nombre, $descripcion, $precio, $media_path, $media_tipo)) {
+            if (create_corte($nombre, $categoria, $descripcion, $precio, $media_path, $media_tipo)) {
                 $mensaje = "Corte \"$nombre\" agregado correctamente.";
             } else {
                 $mensaje  = "No se pudo guardar el corte.";
@@ -133,6 +137,15 @@ $es_super = tiene_rol('super_admin');
                 </div>
 
                 <div class="campo">
+                    <label for="categoria">Categoría</label>
+                    <select id="categoria" name="categoria" required>
+                        <option value="">Seleccioná una categoría...</option>
+                        <option value="hombre">Hombre</option>
+                        <option value="mujer">Mujer</option>
+                    </select>
+                </div>
+
+                <div class="campo">
                     <label for="descripcion">Descripción</label>
                     <textarea id="descripcion" name="descripcion" rows="2" placeholder="Detalles del corte..."></textarea>
                 </div>
@@ -169,6 +182,9 @@ $es_super = tiene_rol('super_admin');
 
                     <div class="tarjeta-corte__body">
                         <h3><?= htmlspecialchars($c['nombre']) ?></h3>
+                        <span class="badge <?= $c['categoria'] === 'hombre' ? 'badge-admin' : 'badge-super_admin' ?>">
+                            <?= $c['categoria'] === 'hombre' ? 'Hombre' : 'Mujer' ?>
+                        </span>
                         <?php if (!empty($c['descripcion'])): ?>
                             <p class="descripcion"><?= htmlspecialchars($c['descripcion']) ?></p>
                         <?php endif; ?>
