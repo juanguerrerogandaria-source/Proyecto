@@ -39,7 +39,7 @@ $rol      = obtener_rol();
     </nav>
 
     <section class="hero">
-        <img src="../../public/img/tuyasbarber.jpeg" alt="Tuya's Barber" class="hero__logo">
+        <img src="../../public/img/tuyas_sin_fondo.png" alt="Tuya's Barber" class="hero__logo">
         <p class="hero__eyebrow">Barbería &amp; estudio de estilo</p>
         <h1>Es más que un corte,<br><span>es tuyo.</span></h1>
         <p>Cortes con precisión de navaja, diseño de barba y una experiencia pensada para que salgas de acá sintiéndote otro.</p>
