@@ -7,6 +7,7 @@ requerir_rol('admin'); // solo admin o super_admin pueden entrar
 <head>
     <meta charset="UTF-8">
     <title>Panel Admin - Tuya's Barber</title>
+    <link rel="stylesheet" href="../../public/css/admin.css">
 </head>
 <body>
     <h1>Panel de Administración</h1>
@@ -16,5 +17,4 @@ requerir_rol('admin'); // solo admin o super_admin pueden entrar
         <p><a href="superadmin_dashboard.php">Ir al panel de Super Admin</a></p>
     <?php endif; ?>
 </body>
-
 </html>

@@ -1,7 +1,7 @@
 <?php
 
-    require_once __DIR__ . '/../includes/config.php';
-     = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+function get_db_connection(): mysqli
+{
     $conexion = new mysqli("localhost", "root", "", "login_re_proyecto");
 
     if ($conexion->connect_error) {

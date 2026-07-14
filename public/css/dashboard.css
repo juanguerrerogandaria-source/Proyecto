@@ -1,0 +1,212 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #fefefe;
+    background-image: url('../img/tuyasbarber.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    font-family: Arial, sans-serif;
+    position: relative;
+    padding: 3rem 1.5rem;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-color: rgba(10, 10, 10, 0.72);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 0;
+}
+
+.panel {
+    position: relative;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 2px solid #7c3aed;
+    border-radius: 16px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #ffffff;
+}
+
+.panel h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+}
+
+.panel .bienvenida {
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 1.5rem;
+    font-size: 15px;
+}
+
+.panel .bienvenida strong {
+    color: #a855f7;
+}
+
+.panel p {
+    margin-bottom: 1rem;
+}
+
+/* Badge de rol */
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-user { background-color: rgba(148, 163, 184, 0.25); color: #cbd5e1; }
+.badge-admin { background-color: rgba(124, 58, 237, 0.25); color: #c4b5fd; }
+.badge-super_admin { background-color: rgba(168, 85, 247, 0.35); color: #f3e8ff; }
+
+/* Links de navegación / acciones */
+.acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 1.5rem;
+}
+
+.btn-link {
+    display: inline-block;
+    padding: 10px 18px;
+    background-color: #7c3aed;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-link:hover {
+    background-color: #6d28d9;
+}
+
+.btn-link:active {
+    transform: scale(0.98);
+}
+
+.btn-volver {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: #a855f7;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.btn-volver:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* Mensajes de estado */
+.mensaje {
+    padding: 10px 16px;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-size: 14px;
+    background-color: rgba(34, 197, 94, 0.15);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    color: #86efac;
+}
+
+.mensaje.error {
+    background-color: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+}
+
+/* Tabla de usuarios (gestionar_roles.php) */
+.tabla-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px 10px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    font-size: 14px;
+}
+
+th {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: bold;
+}
+
+tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+}
+
+.form-rol {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+select {
+    padding: 8px 10px;
+    font-size: 14px;
+    border: 1.5px solid #7c3aed;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    outline: none;
+}
+
+select:focus {
+    border-color: #a855f7;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+select option {
+    background-color: #1e1b2e;
+    color: #ffffff;
+}
+
+.form-rol button {
+    padding: 8px 14px;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #7c3aed;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    white-space: nowrap;
+}
+
+.form-rol button:hover {
+    background-color: #6d28d9;
+}
+
+.form-rol button:active {
+    transform: scale(0.98);
+}

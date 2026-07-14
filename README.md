@@ -17,35 +17,20 @@ un sitio de barbería profesional: hero, quiénes somos, servicios, horarios y f
 
 ```
 proyecto/
-├── public/                       ← Carpeta pública del sitio
-│   ├── css/
-│   │   ├── loginbarber.css
-│   │   └── registrarse.css
-│   ├── img/
-│   │   └── tuyasbarber.jpeg
-│   └── index.php                 ← Punto de acceso público
-├── src/                          ← Lógica del sistema
-│   ├── controllers/
-│   │   └── registro_usuario_BD.php
-│   ├── models/
-│   ├── routes/
-│   └── views/
-│       ├── pagina_principal.php
-│       ├── loginbarber.php
-│       ├── registrarse.php
-│       ├── admin_dashboard.php
-│       └── superadmin_dashboard.php
-├── includes/
-│   ├── auth.php
-│   ├── config.php
-│   ├── header.php
-│   └── footer.php
-├── database/
-│   ├── db.php
-│   └── conexcion_BD.php
-├── assets/
-├── tests/
-└── README.md
+├── includes/auth.php              → sesión y control de roles
+├── database/db.php                → conexión y consultas (PDO/mysqli seguro)
+├── src/views/
+│   ├── pagina_principal.php       → landing rediseñada
+│   ├── loginbarber.php
+│   ├── registrarse.php
+│   ├── admin_dashboard.php
+│   └── superadmin_dashboard.php
+└── public/
+    ├── css/
+    │   ├── pagina_principal.css   → estilo nuevo de la landing
+    │   ├── loginbarber.css
+    │   └── registrarse.css
+    └── img/tuyasbarber.jpeg       → logo
 ```
 
 ## Notas de diseño
