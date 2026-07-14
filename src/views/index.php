@@ -140,7 +140,7 @@ $rol      = obtener_rol();
 
     <footer>
         <a href="pagina_principal.php" class="navbar__brand">
-            <img src="../../public/img/tuyasbarber.jpeg" alt="Tuya's Barber" style="height:32px;width:32px;">
+            <img src="../../public/img/tuyas_sin_fondo.png" alt="Tuya's Barber" style="height:32px;width:32px;">
             Tuya's Barber
         </a>
         <p>&copy; <?= date('Y') ?> Tuya's Barber. Todos los derechos reservados.</p>
