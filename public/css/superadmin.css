@@ -1,0 +1,8 @@
+@import url('panel-base.css');
+
+/* Panel de Super Admin: acento dorado/ámbar para diferenciarlo del admin normal */
+:root {
+    --accent: #d97706;
+    --accent-hover: #b45309;
+    --accent-light: #fbbf24;
+}

@@ -6,7 +6,8 @@ requerir_rol('super_admin'); // solo super_admin puede entrar
 $messages = [];
 $success  = false;
 
-
+// Alta de administradores: única vía para crear cuentas con rol 'admin'.
+// El registro público (registrarse.php) ya no permite elegir rol.
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $usuario          = trim($_POST["usuario"] ?? "");
     $email            = trim($_POST["email"] ?? "");
@@ -66,41 +67,78 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../public/css/superadmin.css">
     <title>Panel Super Admin - Tuya's Barber</title>
 </head>
 <body>
-    <h1>Panel de Super Administrador</h1>
-    <p>Bienvenido, <?= htmlspecialchars($_SESSION['usuario']) ?> (rol: <?= htmlspecialchars($_SESSION['role']) ?>)</p>
-    <p>Acá podrías gestionar admins, usuarios y toda la configuración del sistema.</p>
+    <div class="panel">
+        <h1>Panel de Super Administrador</h1>
+        <p class="bienvenida">
+            Bienvenido, <strong><?= htmlspecialchars($_SESSION['usuario']) ?></strong>
+            &middot; <span class="badge badge-<?= htmlspecialchars($_SESSION['role']) ?>"><?= htmlspecialchars($_SESSION['role']) ?></span>
+        </p>
 
-    <hr>
+        <div class="grid-accesos">
+            <a class="tarjeta-acceso" href="gestionar_cortes.php">
+                <span class="tarjeta-acceso__icono">&#9986;&#65039;</span>
+                <h3>Cortes y Servicios</h3>
+                <p>Agregá cortes con foto o video y modificá sus precios.</p>
+            </a>
 
-    <h2>Crear nuevo administrador</h2>
+            <a class="tarjeta-acceso" href="gestionar_horarios.php">
+                <span class="tarjeta-acceso__icono">&#128337;</span>
+                <h3>Horarios</h3>
+                <p>Configurá los horarios de atención de cada día.</p>
+            </a>
 
-    <?php if (!empty($messages)): ?>
-        <div>
-            <?php foreach ($messages as $message): ?>
-                <p style="color: <?php echo $success ? 'green' : 'red'; ?>; margin: 0.25rem 0;">
-                    <?php echo htmlspecialchars($message); ?>
-                </p>
-            <?php endforeach; ?>
+            <a class="tarjeta-acceso" href="gestionar_ofertas.php">
+                <span class="tarjeta-acceso__icono">&#127991;&#65039;</span>
+                <h3>Ofertas</h3>
+                <p>Creá promociones y descuentos por tiempo limitado.</p>
+            </a>
+
+            <a class="tarjeta-acceso" href="gestionar_roles.php">
+                <span class="tarjeta-acceso__icono">&#128100;</span>
+                <h3>Usuarios y Roles</h3>
+                <p>Modificá el rol de cualquier usuario registrado.</p>
+            </a>
         </div>
-    <?php endif; ?>
 
-    <form action="superadmin_dashboard.php" method="post">
-        <label for="usuario">Usuario:</label>
-        <input type="text" id="usuario" name="usuario" placeholder="Usuario del admin" required>
+        <div class="card-form">
+            <h2>Crear nuevo administrador</h2>
 
-        <label for="email">Correo Electrónico:</label>
-        <input type="email" id="email" name="email" placeholder="correo@ejemplo.com" required>
+            <?php if (!empty($messages)): ?>
+                <?php foreach ($messages as $message): ?>
+                    <p class="mensaje<?= $success ? '' : ' error' ?>"><?= htmlspecialchars($message) ?></p>
+                <?php endforeach; ?>
+            <?php endif; ?>
 
-        <label for="password">Contraseña:</label>
-        <input type="password" id="password" name="password" placeholder="Mínimo 6 caracteres" required minlength="6">
+            <form action="superadmin_dashboard.php" method="post">
+                <div class="grid-2">
+                    <div class="campo">
+                        <label for="usuario">Usuario</label>
+                        <input type="text" id="usuario" name="usuario" placeholder="Usuario del admin" required>
+                    </div>
+                    <div class="campo">
+                        <label for="email">Correo electrónico</label>
+                        <input type="email" id="email" name="email" placeholder="correo@ejemplo.com" required>
+                    </div>
+                </div>
 
-        <label for="confirm_password">Confirmar Contraseña:</label>
-        <input type="password" id="confirm_password" name="confirm_password" placeholder="Repetí la contraseña" required minlength="6">
+                <div class="grid-2">
+                    <div class="campo">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" name="password" placeholder="Mínimo 6 caracteres" required minlength="6">
+                    </div>
+                    <div class="campo">
+                        <label for="confirm_password">Confirmar contraseña</label>
+                        <input type="password" id="confirm_password" name="confirm_password" placeholder="Repetí la contraseña" required minlength="6">
+                    </div>
+                </div>
 
-        <button type="submit">Crear administrador</button>
-    </form>
+                <button type="submit" class="btn-primario">Crear administrador</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

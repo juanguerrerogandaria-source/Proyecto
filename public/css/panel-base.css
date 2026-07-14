@@ -1,0 +1,548 @@
+/* ============================================================
+   Base compartida para los paneles de administración
+   (importada por admin.css y superadmin.css)
+   ============================================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #fefefe;
+    background-image: url('../img/tuyasbarber.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    font-family: Arial, sans-serif;
+    position: relative;
+    padding: 3rem 1.5rem;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-color: rgba(10, 10, 10, 0.75);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 0;
+}
+
+.panel {
+    position: relative;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 2px solid var(--accent, #7c3aed);
+    border-radius: 16px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #ffffff;
+}
+
+.panel--ancho {
+    max-width: 1000px;
+}
+
+.panel h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+}
+
+.panel h2 {
+    font-size: 1.2rem;
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+.panel .bienvenida,
+.panel .subtitulo {
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 1.5rem;
+    font-size: 15px;
+}
+
+.panel .bienvenida strong {
+    color: var(--accent-light, #a855f7);
+}
+
+.panel p {
+    margin-bottom: 1rem;
+}
+
+/* Badges de rol */
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-user { background-color: rgba(148, 163, 184, 0.25); color: #cbd5e1; }
+.badge-admin { background-color: rgba(124, 58, 237, 0.25); color: #c4b5fd; }
+.badge-super_admin { background-color: rgba(245, 158, 11, 0.3); color: #fde68a; }
+
+/* Links / botones de navegación */
+.acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 1.5rem;
+}
+
+.btn-link,
+.btn-primario {
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: var(--accent, #7c3aed);
+    color: #ffffff;
+    text-decoration: none;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-link:hover,
+.btn-primario:hover {
+    background-color: var(--accent-hover, #6d28d9);
+}
+
+.btn-link:active,
+.btn-primario:active {
+    transform: scale(0.98);
+}
+
+.btn-volver {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: var(--accent-light, #a855f7);
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.btn-volver:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.btn-chico {
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: bold;
+    background-color: var(--accent, #7c3aed);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    white-space: nowrap;
+}
+
+.btn-chico:hover {
+    background-color: var(--accent-hover, #6d28d9);
+}
+
+.btn-chico:active {
+    transform: scale(0.98);
+}
+
+.btn-eliminar {
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: bold;
+    background-color: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    white-space: nowrap;
+}
+
+.btn-eliminar:hover {
+    background-color: rgba(239, 68, 68, 0.35);
+}
+
+.btn-eliminar:active {
+    transform: scale(0.98);
+}
+
+/* Mensajes de estado */
+.mensaje {
+    padding: 10px 16px;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-size: 14px;
+    background-color: rgba(34, 197, 94, 0.15);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    color: #86efac;
+}
+
+.mensaje.error {
+    background-color: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+}
+
+/* Tarjetas de acceso (grilla del dashboard) */
+.grid-accesos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin-bottom: 1rem;
+}
+
+.tarjeta-acceso {
+    display: block;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 1.25rem;
+    text-decoration: none;
+    color: #ffffff;
+    transition: border-color 0.2s, background-color 0.2s, transform 0.15s;
+}
+
+.tarjeta-acceso:hover {
+    border-color: var(--accent, #7c3aed);
+    background-color: rgba(255, 255, 255, 0.09);
+    transform: translateY(-2px);
+}
+
+.tarjeta-acceso__icono {
+    font-size: 1.8rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.tarjeta-acceso h3 {
+    font-size: 15px;
+    margin-bottom: 0.35rem;
+}
+
+.tarjeta-acceso p {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.65);
+    margin-bottom: 0;
+}
+
+/* Formularios dentro de una tarjeta (crear corte / oferta / admin) */
+.card-form {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.titulo-lista {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+}
+
+@media (max-width: 560px) {
+    .grid-2, .grid-3 {
+        grid-template-columns: 1fr;
+    }
+}
+
+.campo {
+    margin-bottom: 1rem;
+}
+
+.campo label {
+    display: block;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+input[type="file"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    outline: none;
+    font-family: inherit;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--accent-light, #a855f7);
+    background-color: rgba(255, 255, 255, 0.13);
+}
+
+input[type="file"] {
+    padding: 8px 10px;
+    cursor: pointer;
+}
+
+input[type="file"]::file-selector-button {
+    padding: 6px 12px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 6px;
+    background-color: var(--accent, #7c3aed);
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+textarea {
+    resize: vertical;
+}
+
+select option {
+    background-color: #1e1b2e;
+    color: #ffffff;
+}
+
+/* Tabla (horarios / usuarios) */
+.tabla-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px 10px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    font-size: 14px;
+}
+
+th {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: bold;
+}
+
+tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+}
+
+td input[type="time"] {
+    width: auto;
+    min-width: 110px;
+}
+
+td input[type="time"]:disabled {
+    opacity: 0.35;
+}
+
+.celda-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--accent, #7c3aed);
+    cursor: pointer;
+}
+
+.form-oculto {
+    display: none;
+}
+
+.form-rol {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.form-rol select {
+    width: auto;
+}
+
+/* Grilla de cortes (fotos/videos) */
+.grid-cortes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.vacio {
+    color: rgba(255, 255, 255, 0.55);
+    font-style: italic;
+}
+
+.tarjeta-corte {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.tarjeta-corte__media {
+    width: 100%;
+    height: 140px;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tarjeta-corte__media img,
+.tarjeta-corte__media video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.sin-media {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 13px;
+}
+
+.tarjeta-corte__body {
+    padding: 1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.tarjeta-corte__body h3 {
+    font-size: 15px;
+}
+
+.tarjeta-corte .descripcion {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.65);
+    margin-bottom: 0;
+}
+
+.form-precio {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.form-precio .prefijo {
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: bold;
+}
+
+.form-precio input {
+    flex: 1;
+}
+
+/* Lista de ofertas */
+.lista-ofertas {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.tarjeta-oferta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+}
+
+.tarjeta-oferta--inactiva {
+    opacity: 0.55;
+}
+
+.tarjeta-oferta__descuento {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: var(--accent, #7c3aed);
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.tarjeta-oferta__body {
+    flex: 1;
+    min-width: 0;
+}
+
+.tarjeta-oferta__body h3 {
+    font-size: 15px;
+    margin-bottom: 4px;
+}
+
+.tarjeta-oferta .descripcion {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.65);
+    margin-bottom: 4px;
+}
+
+.tarjeta-oferta .fechas {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 6px;
+}
+
+.tarjeta-oferta__acciones {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 560px) {
+    .tarjeta-oferta {
+        flex-wrap: wrap;
+    }
+}

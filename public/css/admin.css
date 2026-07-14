@@ -1,0 +1,8 @@
+@import url('panel-base.css');
+
+/* Panel de Admin: acento violeta */
+:root {
+    --accent: #7c3aed;
+    --accent-hover: #6d28d9;
+    --accent-light: #a855f7;
+}

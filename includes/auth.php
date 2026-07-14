@@ -46,7 +46,7 @@ function tiene_rol(string $rolRequerido): bool
 function requerir_rol(string $rolRequerido): void
 {
     if (!esta_logueado() || !tiene_rol($rolRequerido)) {
-        header('Location: /src/views/loginbarber.php?error=sin_permiso');
+        header('Location: loginbarber.php?error=sin_permiso');
         exit;
     }
 }
@@ -55,8 +55,8 @@ function requerir_rol(string $rolRequerido): void
 function url_destino_segun_rol(string $role): string
 {
     return match ($role) {
-        'super_admin' => '/src/views/superadmin_dashboard.php',
-        'admin'       => '/src/views/admin_dashboard.php',
-        default       => '/src/views/pagina_principal.php',
+        'super_admin' => 'superadmin_dashboard.php',
+        'admin'       => 'admin_dashboard.php',
+        default       => 'index.php',
     };
 }
