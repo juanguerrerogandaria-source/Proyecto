@@ -13,7 +13,7 @@ requerir_rol('admin'); // solo admin o super_admin pueden entrar
     <p>Bienvenido, <?= htmlspecialchars($_SESSION['usuario']) ?> (rol: <?= htmlspecialchars($_SESSION['role']) ?>)</p>
 
     <?php if (tiene_rol('super_admin')): ?>
-        <p><a href="superadmin_dashboard.php">Ir al  de Super Admin</a></p>
+        <p><a href="superadmin_dashboard.php">Ir al panel de Super Admin</a></p>
     <?php endif; ?>
 </body>
 
