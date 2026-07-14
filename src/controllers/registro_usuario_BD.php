@@ -1,5 +1,5 @@
 <?php
-include 'conexcion_BD.php';
+require_once __DIR__ . '/../../database/conexcion_BD.php';
 
 $nombre_completo      = $_POST['usuario'];
 $correo               = $_POST['email'];
