@@ -68,6 +68,7 @@ $cortes   = get_cortes_por_categoria('mujer');
                                 <p><?= htmlspecialchars($c['descripcion']) ?></p>
                             <?php endif; ?>
                             <span class="corte-card__precio">$<?= htmlspecialchars((string) $c['precio']) ?></span>
+                            <a href="reservar.php?corte_id=<?= (int) $c['id'] ?>" class="btn btn--primary corte-card__reservar">Reservar</a>
                         </div>
                     </div>
                 <?php endforeach; ?>

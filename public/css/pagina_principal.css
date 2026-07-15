@@ -392,63 +392,12 @@ footer .navbar__brand {
     margin-bottom: 14px;
 }
 
-/* ---------- Categorías (Hombre / Mujer) en la home ---------- */
 .categorias__grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 28px;
-    max-width: 760px;
+    gap: 20px;
+    max-width: 560px;
     margin: 0 auto;
-}
-
-.categoria-card {
-    position: relative;
-    display: block;
-    border-radius: 18px;
-    overflow: hidden;
-    border: 1px solid var(--border);
-    background: var(--bg-card);
-    min-height: 260px;
-    display: flex;
-    align-items: flex-end;
-    padding: 32px;
-    transition: transform 0.25s, border-color 0.25s;
-}
-
-.categoria-card:hover {
-    transform: translateY(-6px);
-    border-color: var(--accent-light);
-}
-
-.categoria-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 50% 100%, var(--accent-glow), transparent 70%);
-    opacity: 0.6;
-    z-index: 0;
-}
-
-.categoria-card__contenido {
-    position: relative;
-    z-index: 1;
-}
-
-.categoria-card .icon-grande {
-    font-size: 2.6rem;
-    display: block;
-    margin-bottom: 10px;
-}
-
-.categoria-card h3 {
-    font-family: 'Cinzel', serif;
-    font-size: 1.4rem;
-    margin-bottom: 6px;
-}
-
-.categoria-card p {
-    color: var(--text-muted);
-    font-size: 0.9rem;
 }
 
 @media (max-width: 520px) {
@@ -545,6 +494,14 @@ footer .navbar__brand {
     font-weight: 700;
     color: var(--accent-light);
     font-size: 1.15rem;
+}
+
+.corte-card__reservar {
+    display: block;
+    text-align: center;
+    margin-top: 14px;
+    padding: 10px 16px;
+    font-size: 0.85rem;
 }
 
 .vacio-cortes {

@@ -32,7 +32,7 @@ $rol      = obtener_rol();
                     <span class="btn btn--ghost">Hola, <?= htmlspecialchars($_SESSION['usuario']) ?></span>
                 <?php else: ?>
                     <a href="loginbarber.php" class="btn btn--ghost">Iniciar sesión</a>
-                    <a href="registrarse.php" class="btn btn--primary">Reservá tu turno</a>
+                    <a href="reservar.php" class="btn btn--primary">Reservá tu turno</a>
                 <?php endif; ?>
             </div>
         </div>
@@ -44,7 +44,7 @@ $rol      = obtener_rol();
         <h1>Es más que un corte,<br><span>es tuyo.</span></h1>
         <p>Cortes con precisión de navaja, diseño de barba y una experiencia pensada para que salgas de acá sintiéndote otro.</p>
         <div class="hero__actions">
-            <a href="registrarse.php" class="btn btn--primary">Reservá tu turno</a>
+            <a href="reservar.php" class="btn btn--primary">Reservá tu turno</a>
             <a href="#servicios" class="btn btn--ghost">Ver servicios</a>
         </div>
     </section>
@@ -93,20 +93,16 @@ $rol      = obtener_rol();
             <p class="section__lead">Elegí tu categoría y descubrí todos los cortes disponibles.</p>
 
             <div class="categorias__grid">
-                <a href="cortes_hombre.php" class="categoria-card">
-                    <div class="categoria-card__contenido">
-                        <span class="icon-grande">&#9986;&#65039;</span>
-                        <h3>Hombre</h3>
-                        <p>Fades, cortes clásicos, diseño de barba y más.</p>
-                    </div>
+                <a href="cortes_hombre.php" class="service-card">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3v18M6 3a3 3 0 1 1 0 6M6 15a3 3 0 1 0 0 6M6 9l14 6M6 15l14-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <h3>Hombre</h3>
+                    <p>Fades, cortes clásicos, diseño de barba y más.</p>
                 </a>
 
-                <a href="cortes_mujer.php" class="categoria-card">
-                    <div class="categoria-card__contenido">
-                        <span class="icon-grande">&#128132;</span>
-                        <h3>Mujer</h3>
-                        <p>Cortes, color, peinados y tratamientos.</p>
-                    </div>
+                <a href="cortes_mujer.php" class="service-card">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v3H4Z"/><path d="M6 7v13M10 7v10M14 7v13M18 7v10" stroke-linecap="round"/></svg>
+                    <h3>Mujer</h3>
+                    <p>Cortes, color, peinados y tratamientos.</p>
                 </a>
             </div>
         </div>

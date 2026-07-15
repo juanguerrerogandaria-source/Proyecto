@@ -251,3 +251,52 @@ function delete_oferta(int $id): bool
         $conexion->close();
     }
 }
+
+// ------------------------------------------------------------------
+// Reservas de turnos
+// ------------------------------------------------------------------
+
+function get_corte_por_id(int $id): ?array
+{
+    $conexion = get_db_connection();
+
+    try {
+        $stmt = $conexion->prepare("SELECT id, nombre, categoria, precio FROM cortes WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        $resultado = $stmt->get_result();
+
+        return $resultado->fetch_assoc() ?: null;
+    } finally {
+        $conexion->close();
+    }
+}
+
+function create_reserva(
+    string $codigo,
+    string $nombre_cliente,
+    string $email_cliente,
+    ?string $telefono_cliente,
+    ?int $corte_id,
+    string $fecha,
+    string $hora,
+    ?string $notas
+): bool {
+    $conexion = get_db_connection();
+
+    try {
+        $stmt = $conexion->prepare(
+            "INSERT INTO reservas (codigo, nombre_cliente, email_cliente, telefono_cliente, corte_id, fecha, hora, notas)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+        );
+        $stmt->bind_param(
+            "ssssisss",
+            $codigo, $nombre_cliente, $email_cliente, $telefono_cliente, $corte_id, $fecha, $hora, $notas
+        );
+
+        return $stmt->execute();
+    } finally {
+        $conexion->close();
+    }
+}

@@ -1,0 +1,216 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #fafafa;
+    background-image: url('../img/tuyasbarber.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+    position: relative;
+    padding: 3rem 1rem;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-color: rgba(10, 10, 10, 0.75);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 0;
+}
+
+.tarjeta-reserva {
+    position: relative;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 2px solid #7c3aed;
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    width: 100%;
+    max-width: 480px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #ffffff;
+}
+
+.tarjeta-reserva h1 {
+    font-size: 1.5rem;
+    margin-bottom: 6px;
+    text-align: center;
+}
+
+.tarjeta-reserva .subtitulo {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 14px;
+    margin-bottom: 1.5rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+@media (max-width: 460px) {
+    .grid-2 { grid-template-columns: 1fr; }
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: -4px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 15px;
+    border: 1.5px solid #7c3aed;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    outline: none;
+    font-family: inherit;
+}
+
+input::placeholder, textarea::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #a855f7;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+select option {
+    background-color: #1e1b2e;
+    color: #ffffff;
+}
+
+textarea {
+    resize: vertical;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #7c3aed;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 6px;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+button:hover { background-color: #6d28d9; }
+button:active { transform: scale(0.98); }
+
+.mensaje {
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-size: 14px;
+    background-color: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+}
+
+.volver {
+    display: block;
+    color: #a855f7;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 14px;
+    font-size: 14px;
+}
+
+.volver:hover { text-decoration: underline; color: #ffffff; }
+
+/* ---------- Comprobante (ticket de reserva) ---------- */
+.comprobante {
+    border: 2px dashed rgba(168, 85, 247, 0.5);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.comprobante__ok {
+    text-align: center;
+    color: #86efac;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.comprobante__codigo {
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: bold;
+    letter-spacing: 0.08em;
+    color: #a855f7;
+    margin-bottom: 1.2rem;
+}
+
+.comprobante__fila {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    font-size: 14px;
+}
+
+.comprobante__fila:last-child { border-bottom: none; }
+
+.comprobante__fila span:first-child {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.comprobante__acciones {
+    display: flex;
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+.btn-secundario {
+    background-color: transparent;
+    border: 1.5px solid #7c3aed;
+}
+
+.btn-secundario:hover {
+    background-color: rgba(124, 58, 237, 0.15);
+}
+
+.aviso-email {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    margin-top: 10px;
+}
+
+@media print {
+    body::before, .comprobante__acciones, .volver { display: none; }
+    body { background: #ffffff; }
+    .tarjeta-reserva { border: 1px solid #000; color: #000; backdrop-filter: none; }
+    .comprobante__codigo, .comprobante__fila span:first-child { color: #000 !important; }
+}
