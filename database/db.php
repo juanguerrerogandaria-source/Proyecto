@@ -8,6 +8,9 @@ function get_db_connection(): mysqli
         throw new RuntimeException("Error de conexión: " . $conexion->connect_error);
     }
 
+    // Importante: sin esto los acentos (Sábado, Miércoles, ñ) llegan rotos a MySQL
+    $conexion->set_charset('utf8mb4');
+
     return $conexion;
 }
 
@@ -293,6 +296,190 @@ function create_reserva(
         $stmt->bind_param(
             "ssssisss",
             $codigo, $nombre_cliente, $email_cliente, $telefono_cliente, $corte_id, $fecha, $hora, $notas
+        );
+
+        return $stmt->execute();
+    } finally {
+        $conexion->close();
+    }
+}
+
+// ------------------------------------------------------------------
+// Flujo de reserva en pasos (horarios disponibles, ofertas, email)
+// ------------------------------------------------------------------
+
+// Devuelve las horas ya reservadas para una fecha, en formato HH:MM
+function obtener_horas_ocupadas(string $fecha): array
+{
+    $conexion = get_db_connection();
+
+    try {
+        $stmt = $conexion->prepare("SELECT hora FROM reservas WHERE fecha = ? AND estado <> 'cancelada'");
+        $stmt->bind_param("s", $fecha);
+        $stmt->execute();
+
+        $resultado = $stmt->get_result();
+        $horas = [];
+
+        while ($fila = $resultado->fetch_assoc()) {
+            // normalizamos a HH:MM por si MySQL devuelve HH:MM:SS
+            $horas[] = substr($fila['hora'], 0, 5);
+        }
+
+        return $horas;
+    } finally {
+        $conexion->close();
+    }
+}
+
+// Devuelve el horario de atención (apertura, cierre, cerrado) para una fecha concreta,
+// usando la tabla `horarios` que administra el panel de admin.
+function get_horario_para_fecha(string $fecha): ?array
+{
+    // Comparamos por las primeras letras sin acento (mie, sab) para que funcione
+    // aunque los nombres de los días se hayan guardado con problemas de codificación.
+    $dias = [1 => 'lun', 2 => 'mar', 3 => 'mie', 4 => 'jue', 5 => 'vie', 6 => 'sab', 7 => 'dom'];
+    $clave = $dias[(int) date('N', strtotime($fecha))] ?? null;
+
+    if ($clave === null) {
+        return null;
+    }
+
+    $conexion = get_db_connection();
+
+    try {
+        $resultado = $conexion->query("SELECT dia, hora_apertura, hora_cierre, cerrado FROM horarios");
+
+        while ($fila = $resultado->fetch_assoc()) {
+            // Nos quedamos solo con letras a-z: "Miércoles" -> "mircoles", "Sábado" -> "sbado"
+            $normalizado = strtolower(preg_replace('/[^a-zA-Z]/', '', $fila['dia']));
+
+            if ($normalizado === '') {
+                continue;
+            }
+
+            // Identificamos el día por sus primeras letras (sin depender de los acentos)
+            $claveFila = match (true) {
+                str_starts_with($normalizado, 'lu')  => 'lun',
+                str_starts_with($normalizado, 'ma')  => 'mar',
+                str_starts_with($normalizado, 'mi')  => 'mie',
+                str_starts_with($normalizado, 'ju')  => 'jue',
+                str_starts_with($normalizado, 'vi')  => 'vie',
+                str_starts_with($normalizado, 'sa'),
+                str_starts_with($normalizado, 'sb')  => 'sab',
+                str_starts_with($normalizado, 'do')  => 'dom',
+                default => null,
+            };
+
+            if ($claveFila === $clave) {
+                return $fila;
+            }
+        }
+
+        return null;
+    } finally {
+        $conexion->close();
+    }
+}
+
+// Genera los turnos posibles (cada 1 hora) entre apertura y cierre de ese día.
+// Si el local está cerrado ese día, devuelve un array vacío.
+function generar_turnos_para_fecha(string $fecha): array
+{
+    $horario = get_horario_para_fecha($fecha);
+
+    if (!$horario || (int) $horario['cerrado'] === 1 || empty($horario['hora_apertura']) || empty($horario['hora_cierre'])) {
+        return [];
+    }
+
+    $turnos  = [];
+    $actual  = strtotime($fecha . ' ' . $horario['hora_apertura']);
+    $cierre  = strtotime($fecha . ' ' . $horario['hora_cierre']);
+
+    // El último turno arranca una hora antes del cierre
+    while ($actual < $cierre) {
+        $turnos[] = date('H:i', $actual);
+        $actual  += 3600;
+    }
+
+    return $turnos;
+}
+
+// Devuelve la oferta activa con mayor descuento vigente hoy (o null si no hay)
+function get_mejor_oferta_activa(): ?array
+{
+    $conexion = get_db_connection();
+
+    try {
+        $hoy = date('Y-m-d');
+        $stmt = $conexion->prepare(
+            "SELECT id, titulo, descuento_porcentaje
+             FROM ofertas
+             WHERE activa = 1
+               AND (fecha_inicio IS NULL OR fecha_inicio <= ?)
+               AND (fecha_fin IS NULL OR fecha_fin >= ?)
+             ORDER BY descuento_porcentaje DESC
+             LIMIT 1"
+        );
+        $stmt->bind_param("ss", $hoy, $hoy);
+        $stmt->execute();
+
+        return $stmt->get_result()->fetch_assoc() ?: null;
+    } finally {
+        $conexion->close();
+    }
+}
+
+// Devuelve el email guardado de un usuario logueado (para precargar el formulario)
+function get_email_usuario(int $id): ?string
+{
+    $conexion = get_db_connection();
+
+    try {
+        $stmt = $conexion->prepare("SELECT email FROM usuarios WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        $fila = $stmt->get_result()->fetch_assoc();
+
+        return $fila['email'] ?? null;
+    } finally {
+        $conexion->close();
+    }
+}
+
+// Crea la reserva del flujo en pasos. Revalida que el horario siga libre
+// justo antes de insertar, para evitar que dos personas tomen el mismo turno.
+function crear_reserva_flow(
+    string $codigo,
+    string $nombre_cliente,
+    string $email_cliente,
+    ?string $telefono_cliente,
+    ?int $corte_id,
+    string $fecha,
+    string $hora,
+    ?string $notas,
+    string $metodo_pago,
+    float $monto
+): bool {
+    $conexion = get_db_connection();
+
+    try {
+        $check = $conexion->prepare("SELECT id FROM reservas WHERE fecha = ? AND hora = ? AND estado <> 'cancelada'");
+        $check->bind_param("ss", $fecha, $hora);
+        $check->execute();
+
+        if ($check->get_result()->num_rows > 0) {
+            return false;
+        }
+
+        $stmt = $conexion->prepare(
+            "INSERT INTO reservas (codigo, nombre_cliente, email_cliente, telefono_cliente, corte_id, fecha, hora, notas, metodo_pago, monto)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        );
+        $stmt->bind_param(
+            "ssssissssd",
+            $codigo, $nombre_cliente, $email_cliente, $telefono_cliente, $corte_id, $fecha, $hora, $notas, $metodo_pago, $monto
         );
 
         return $stmt->execute();
