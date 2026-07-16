@@ -51,8 +51,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $password_hash = password_hash($confirm_password, PASSWORD_DEFAULT);
 
             if (create_user($usuario, $email, $password_hash, $role)) {
-                $success = true;
-                $messages[] = "Usuario registrado correctamente.";
+                header('Location: loginbarber.php?registrado=1');
+                exit;
             } else {
                 $messages[] = "Error al registrar el usuario.";
             }

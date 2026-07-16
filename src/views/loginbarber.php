@@ -5,6 +5,11 @@ require_once __DIR__ . '/../../includes/auth.php';
 $message = "";
 $success = false;
 
+if (isset($_GET['registrado'])) {
+    $message = "Cuenta creada correctamente. Iniciá sesión para continuar.";
+    $success = true;
+}
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $usuario  = trim($_POST["usuario"] ?? "");
     $password = trim($_POST["password"] ?? "");
