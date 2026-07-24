@@ -5,13 +5,12 @@ $messages = [];
 $success = false;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $usuario          = trim($_POST["usuario"] ?? "");
-    $email            = trim($_POST["email"] ?? "");
-    $password         = trim($_POST["password"] ?? "");
-    $confirm_password = trim($_POST["confirm_password"] ?? "");
+    $usuario          = htmlspecialchars(trim($_POST["usuario"] ?? ""));
+    $email            = htmlspecialchars(trim($_POST["email"] ?? ""));
+    $password         = htmlspecialchars(trim($_POST["password"] ?? ""));
+    $confirm_password = htmlspecialchars(trim($_POST["confirm_password"] ?? ""));
 
-    // El registro público SIEMPRE crea usuarios normales.
-    // 'admin' y 'super_admin' solo se otorgan desde el panel privado de super_admin.
+    
     $role = "user";
 
     if (empty($usuario) || empty($email) || empty($password) || empty($confirm_password)) {

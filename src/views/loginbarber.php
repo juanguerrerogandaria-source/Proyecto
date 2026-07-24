@@ -11,8 +11,8 @@ if (isset($_GET['registrado'])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $usuario  = trim($_POST["usuario"] ?? "");
-    $password = trim($_POST["password"] ?? "");
+    $usuario  = htmlspecialchars(trim($_POST["usuario"] ?? ""));
+    $password = htmlspecialchars(trim($_POST["password"] ?? ""));
 
     if (empty($usuario) || empty($password)) {
         $message = "Por favor completá todos los campos.";
