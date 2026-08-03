@@ -16,7 +16,7 @@ $rol      = obtener_rol();
 
     <nav class="navbar">
         <div class="container">
-            <a href="pagina_principal.php" class="navbar__brand">
+            <a class="navbar__brand">
                 <img src="../../public/img/tuyasbarber.jpeg" alt="Tuya's Barber">
                 Tuya's Barber
             </a>
