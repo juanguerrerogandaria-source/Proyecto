@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="sparkles" id="sparkles"></div>
 
     <div class="flow-wrapper">
-        <a href="pagina_principal.php" class="flow-logo">
+        <a href="index.php" class="flow-logo">
             <img src="../../public/img/tuyasbarber.jpeg" alt="Tuya's Barber">
             <span>Tuya's Barber</span>
         </a>
