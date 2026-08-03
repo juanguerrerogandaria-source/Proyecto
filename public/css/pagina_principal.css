@@ -160,7 +160,7 @@ img { max-width: 100%; display: block; }
     z-index: 2;
     width: 92px;
     height: 78px;
-    background: #0c0a0a;
+    background: var(--bg);
     border-radius: 0 0 22px 22px;
     display: flex;
     align-items: center;
@@ -225,7 +225,7 @@ img { max-width: 100%; display: block; }
     align-items: stretch;
     justify-content: center;
     background: var(--accent);
-    border-bottom: 4px solid #4a0a10;
+    border-bottom: 4px solid var(--accent);
 }
 
 .hero__btn {
