@@ -4,10 +4,10 @@
     --bg: #0c0a0a;
     --bg-alt: #161112;
     --bg-card: rgba(255, 255, 255, 0.04);
-    --accent: #87128b;
-    --accent-light: #87128b;
-    --accent-glow: #87128b;
-    --border: #87128b;
+    --accent: #8b1220;
+    --accent-light: #c81e2c;
+    --accent-glow: rgba(200, 30, 44, 0.45);
+    --border: rgba(200, 30, 44, 0.25);
     --text: #f5f0f0;
     --text-muted: #b3a1a1;
     --text-dim: #796a6a;
@@ -160,7 +160,7 @@ img { max-width: 100%; display: block; }
     z-index: 2;
     width: 92px;
     height: 78px;
-    background: var(--bg);
+    background: #0c0a0a;
     border-radius: 0 0 22px 22px;
     display: flex;
     align-items: center;
@@ -225,7 +225,7 @@ img { max-width: 100%; display: block; }
     align-items: stretch;
     justify-content: center;
     background: var(--accent);
-    border-bottom: 4px solid var(--accent);
+    border-bottom: 4px solid #4a0a10;
 }
 
 .hero__btn {
