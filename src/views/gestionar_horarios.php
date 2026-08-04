@@ -79,7 +79,6 @@ $es_super = tiene_rol('super_admin');
     </div>
 
     <script>
-        // Deshabilita los inputs de hora de la fila cuando se marca "cerrado"
         document.querySelectorAll('.check-cerrado').forEach(function (checkbox) {
             checkbox.addEventListener('change', function () {
                 const fila = checkbox.closest('tr');

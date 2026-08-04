@@ -1,16 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-    --bg: #0c0a0a;
-    --bg-alt: #161112;
+    --bg: #0a0a0c;
+    --bg-alt: #121116;
     --bg-card: rgba(255, 255, 255, 0.04);
-    --accent: #8b1220;
-    --accent-light: #c81e2c;
-    --accent-glow: rgba(200, 30, 44, 0.45);
-    --border: rgba(200, 30, 44, 0.25);
-    --text: #f5f0f0;
-    --text-muted: #b3a1a1;
-    --text-dim: #796a6a;
+    --accent: #7c3aed;
+    --accent-light: #a855f7;
+    --accent-glow: rgba(168, 85, 247, 0.45);
+    --border: rgba(168, 85, 247, 0.25);
+    --text: #f5f0f5;
+    --text-muted: #b0a8b8;
+    --text-dim: #756c80;
 }
 
 * {
@@ -160,7 +160,7 @@ img { max-width: 100%; display: block; }
     z-index: 2;
     width: 92px;
     height: 78px;
-    background: #0c0a0a;
+    background: var(--bg);
     border-radius: 0 0 22px 22px;
     display: flex;
     align-items: center;
@@ -225,7 +225,7 @@ img { max-width: 100%; display: block; }
     align-items: stretch;
     justify-content: center;
     background: var(--accent);
-    border-bottom: 4px solid #4a0a10;
+    border-bottom: 4px solid #3b0764;
 }
 
 .hero__btn {
@@ -460,7 +460,7 @@ img { max-width: 100%; display: block; }
 }
 
 .hours {
-    display: inline-flex;
+    display: flex;
     gap: 32px;
     margin-top: 44px;
     padding-top: 32px;

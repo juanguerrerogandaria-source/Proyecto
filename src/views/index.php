@@ -9,7 +9,7 @@ $rol      = obtener_rol();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../public/css/pagina_principal.css">
+    <link rel="stylesheet" href="../../public/css/pagina_principal.css?v=3">
     <title>Tuya's Barber</title>
 </head>
 <body>
@@ -181,7 +181,6 @@ $rol      = obtener_rol();
     </footer>
 
     <script>
-        // ---------- Modal "Quiénes somos" ----------
         const btnQuienes    = document.getElementById('btn-quienes-somos');
         const overlayQuienes = document.getElementById('overlay-quienes');
         const cerrarQuienes  = document.getElementById('cerrar-quienes');

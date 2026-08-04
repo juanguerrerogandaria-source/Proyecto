@@ -10,7 +10,7 @@ $cortes   = get_cortes_por_categoria('hombre');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../public/css/pagina_principal.css">
+    <link rel="stylesheet" href="../../public/css/pagina_principal.css?v=3">
     <title>Cortes de Hombre - Tuya's Barber</title>
 </head>
 <body>
