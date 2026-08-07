@@ -58,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/css/flow.css">
     <title>Elegí tu servicio - Tuya's Barber</title>
+    <script src="../../public/js/servicio.js" defer></script>
 </head>
 <body>
     <div class="sparkles" id="sparkles"></div>
@@ -98,18 +99,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <a href="pago.php" class="flow-back">&larr; Cambiar método de pago</a>
     </div>
-
-    <script>
-        const container = document.getElementById('sparkles');
-        for (let i = 0; i < 40; i++) {
-            const s = document.createElement('div');
-            s.className = 'sparkle';
-            s.style.left = Math.random() * 100 + '%';
-            s.style.top = Math.random() * 100 + '%';
-            s.style.animationDelay = (Math.random() * 3) + 's';
-            s.style.animationDuration = (2 + Math.random() * 3) + 's';
-            container.appendChild(s);
-        }
-    </script>
 </body>
 </html>

@@ -48,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/css/flow.css">
     <title>Elegí tu horario - Tuya's Barber</title>
+    <script src="../../public/js/horarios.js"></script>
 </head>
 <body>
     <div class="sparkles" id="sparkles"></div>
@@ -106,21 +107,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <a href="reservar.php" class="flow-back">&larr; Cambiar corte</a>
     </div>
 
-    <script>
-        document.getElementById('fecha').addEventListener('change', function () {
-            document.getElementById('form-fecha').submit();
-        });
-
-        const container = document.getElementById('sparkles');
-        for (let i = 0; i < 40; i++) {
-            const s = document.createElement('div');
-            s.className = 'sparkle';
-            s.style.left = Math.random() * 100 + '%';
-            s.style.top = Math.random() * 100 + '%';
-            s.style.animationDelay = (Math.random() * 3) + 's';
-            s.style.animationDuration = (2 + Math.random() * 3) + 's';
-            container.appendChild(s);
-        }
-    </script>
 </body>
 </html>

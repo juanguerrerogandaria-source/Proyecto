@@ -87,6 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/css/flow.css">
     <title>Datos y pago - Tuya's Barber</title>
+    <script src="../../public/js/pagos.js"></script>
 </head>
 <body>
     <div class="sparkles" id="sparkles"></div>
@@ -118,19 +119,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form method="post" class="flow-form">
             <label for="nombre_cliente">Nombre completo</label>
             <input type="text" id="nombre_cliente" name="nombre_cliente" placeholder="Tu nombre"
-                   value="<?= htmlspecialchars($_POST['nombre_cliente'] ?? $nombrePrecargado) ?>" required>
+                value="<?= htmlspecialchars($_POST['nombre_cliente'] ?? $nombrePrecargado) ?>" required>
 
             <label for="email_cliente">Correo electrónico (ahí llega el comprobante)</label>
             <input type="email" id="email_cliente" name="email_cliente" placeholder="correo@ejemplo.com"
-                   value="<?= htmlspecialchars($_POST['email_cliente'] ?? $emailPrecargado) ?>" required>
+                value="<?= htmlspecialchars($_POST['email_cliente'] ?? $emailPrecargado) ?>" required>
 
             <label for="telefono_cliente">Teléfono (opcional)</label>
             <input type="text" id="telefono_cliente" name="telefono_cliente" placeholder="Tu teléfono"
-                   value="<?= htmlspecialchars($_POST['telefono_cliente'] ?? '') ?>">
+                value="<?= htmlspecialchars($_POST['telefono_cliente'] ?? '') ?>">
 
             <label for="notas">Notas (opcional)</label>
             <input type="text" id="notas" name="notas" placeholder="Alguna aclaración para tu turno..."
-                   value="<?= htmlspecialchars($_POST['notas'] ?? '') ?>">
+                value="<?= htmlspecialchars($_POST['notas'] ?? '') ?>">
 
             <label>¿Cómo vas a pagar?</label>
             <div class="pago-grid">
@@ -147,18 +148,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <a href="horario.php" class="flow-back">&larr; Cambiar horario</a>
     </div>
-
-    <script>
-        const container = document.getElementById('sparkles');
-        for (let i = 0; i < 40; i++) {
-            const s = document.createElement('div');
-            s.className = 'sparkle';
-            s.style.left = Math.random() * 100 + '%';
-            s.style.top = Math.random() * 100 + '%';
-            s.style.animationDelay = (Math.random() * 3) + 's';
-            s.style.animationDuration = (2 + Math.random() * 3) + 's';
-            container.appendChild(s);
-        }
-    </script>
 </body>
 </html>

@@ -11,7 +11,6 @@ if (!$c) {
 
 $emailEnviado = $_SESSION['flow_email_enviado'] ?? false;
 
-// Ya se mostró el comprobante: lo sacamos de la sesión para no repetirlo.
 unset($_SESSION['flow_comprobante'], $_SESSION['flow_email_enviado']);
 ?>
 <!DOCTYPE html>
@@ -21,6 +20,7 @@ unset($_SESSION['flow_comprobante'], $_SESSION['flow_email_enviado']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/css/flow.css">
     <title>¡Turno confirmado! - Tuya's Barber</title>
+    <script src="../../public/js/comprobante.js"></script>
 </head>
 <body>
     <div class="sparkles" id="sparkles"></div>
@@ -90,17 +90,5 @@ unset($_SESSION['flow_comprobante'], $_SESSION['flow_email_enviado']);
         </div>
     </div>
 
-    <script>
-        const container = document.getElementById('sparkles');
-        for (let i = 0; i < 40; i++) {
-            const s = document.createElement('div');
-            s.className = 'sparkle';
-            s.style.left = Math.random() * 100 + '%';
-            s.style.top = Math.random() * 100 + '%';
-            s.style.animationDelay = (Math.random() * 3) + 's';
-            s.style.animationDuration = (2 + Math.random() * 3) + 's';
-            container.appendChild(s);
-        }
-    </script>
 </body>
 </html>

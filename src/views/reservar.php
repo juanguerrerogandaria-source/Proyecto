@@ -62,6 +62,7 @@ function precio_con_oferta(float $precio, ?array $oferta): float
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/css/flow.css">
     <title>Reservá tu turno - Tuya's Barber</title>
+    <script src="../../public/js/reservar.js" defer></script>
 </head>
 <body>
     <div class="sparkles" id="sparkles"></div>
@@ -121,18 +122,5 @@ function precio_con_oferta(float $precio, ?array $oferta): float
 
         <a href="index.php" class="flow-back">&larr; Volver al inicio</a>
     </div>
-
-    <script>
-        const container = document.getElementById('sparkles');
-        for (let i = 0; i < 40; i++) {
-            const s = document.createElement('div');
-            s.className = 'sparkle';
-            s.style.left = Math.random() * 100 + '%';
-            s.style.top = Math.random() * 100 + '%';
-            s.style.animationDelay = (Math.random() * 3) + 's';
-            s.style.animationDuration = (2 + Math.random() * 3) + 's';
-            container.appendChild(s);
-        }
-    </script>
 </body>
 </html>

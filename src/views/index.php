@@ -11,6 +11,7 @@ $rol      = obtener_rol();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/css/pagina_principal.css?v=3">
     <title>Tuya's Barber</title>
+    <script src="../../public/js/pagina_principal.js"></script>
 </head>
 <body>
 
@@ -180,23 +181,5 @@ $rol      = obtener_rol();
         <p>&copy; <?= date('Y') ?> Tuya's Barber. Todos los derechos reservados.</p>
     </footer>
 
-    <script>
-        const btnQuienes    = document.getElementById('btn-quienes-somos');
-        const overlayQuienes = document.getElementById('overlay-quienes');
-        const cerrarQuienes  = document.getElementById('cerrar-quienes');
-        const okQuienes      = document.getElementById('ok-quienes');
-
-        function abrirQuienes() { overlayQuienes.classList.add('overlay--visible'); }
-        function cerrarModalQuienes() { overlayQuienes.classList.remove('overlay--visible'); }
-
-        if (btnQuienes) btnQuienes.addEventListener('click', abrirQuienes);
-        if (cerrarQuienes) cerrarQuienes.addEventListener('click', cerrarModalQuienes);
-        if (okQuienes) okQuienes.addEventListener('click', cerrarModalQuienes);
-        if (overlayQuienes) {
-            overlayQuienes.addEventListener('click', function (e) {
-                if (e.target === overlayQuienes) cerrarModalQuienes();
-            });
-        }
-    </script>
 </body>
 </html>

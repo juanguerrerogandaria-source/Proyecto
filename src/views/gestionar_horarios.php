@@ -31,6 +31,7 @@ $es_super = tiene_rol('super_admin');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/css/<?= $es_super ? 'superadmin.css' : 'admin.css' ?>">
     <title>Gestionar Horarios - Tuya's Barber</title>
+    <script src="../../public/js/gestionar_horarios.js"></script>
 </head>
 <body>
     <div class="panel panel--ancho">
@@ -78,15 +79,5 @@ $es_super = tiene_rol('super_admin');
         <?php endforeach; ?>
     </div>
 
-    <script>
-        document.querySelectorAll('.check-cerrado').forEach(function (checkbox) {
-            checkbox.addEventListener('change', function () {
-                const fila = checkbox.closest('tr');
-                fila.querySelectorAll('input[type="time"]').forEach(function (input) {
-                    input.disabled = checkbox.checked;
-                });
-            });
-        });
-    </script>
 </body>
 </html>
