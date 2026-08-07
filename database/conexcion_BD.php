@@ -1,10 +1,10 @@
 <?php
 
 $conexion = mysqli_connect(
-    "sql304.infinityfree.com",
-    "if0_42417739",
-    "x0n6Vzjk0WCj",
-    "if0_42417739_proyecto_web"
+    "localhost",
+    "root",
+    "",
+    "login_re_proyecto"
 );
 
 if (!$conexion) {
