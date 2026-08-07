@@ -1,5 +1,4 @@
 <?php
-// Paso 4 del flujo de reserva: comprobante final.
 require_once __DIR__ . '/../../includes/auth.php';
 
 $c = $_SESSION['flow_comprobante'] ?? null;

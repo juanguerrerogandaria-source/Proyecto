@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../includes/auth.php';
-requerir_rol('admin'); // solo admin o super_admin pueden entrar
+requerir_rol('admin'); 
 ?>
 <!DOCTYPE html>
 <html lang="es">
