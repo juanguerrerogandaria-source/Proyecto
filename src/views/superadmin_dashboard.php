@@ -139,6 +139,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <button type="submit" class="btn-primario">Crear administrador</button>
             </form>
         </div>
+        <a href="index.php" class="flow-back">&larr; Volver al inicio</a>
     </div>
 </body>
 </html>

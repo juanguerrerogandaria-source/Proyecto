@@ -43,6 +43,8 @@ requerir_rol('admin');
                 <a class="btn-link" href="superadmin_dashboard.php">Ir al panel de Super Admin</a>
             </div>
         <?php endif; ?>
+    
+        <a href="index.php" class="flow-back">&larr; Volver al inicio</a>
     </div>
 </body>
 </html>

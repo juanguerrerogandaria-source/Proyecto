@@ -1,0 +1,26 @@
+@import url('panel-base.css');
+
+table.historial { 
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px; 
+}
+
+table.historial th, table.historial td {
+    padding: 10px; 
+    border: 1px solid #ddd; 
+    text-align: left; 
+}
+
+table.historial th {
+    background-color: #f4f4f4;
+}
+.estado-pendiente   {
+    color: #b58900; 
+    font-weight: bold; }
+
+.estado-confirmada { color: #268bd2; 
+    font-weight: bold; }
+
+.estado-cancelada  { color: #dc322f; 
+    font-weight: bold; }

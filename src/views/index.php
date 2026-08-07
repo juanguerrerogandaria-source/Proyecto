@@ -62,18 +62,8 @@ $rol      = obtener_rol();
                 </svg>
             </button>
         </div>
-
-        <div class="hero__barra">
-            <?php if ($logueado): ?>
-                <a href="reservar.php" class="hero__btn hero__btn--solido">Reserva online</a>
-            <?php else: ?>
-                <a href="registrarse.php" class="hero__btn hero__btn--solido" id="btn-registrarte">Reserva online</a>
-            <?php endif; ?>
-            <a href="#horarios" class="hero__btn hero__btn--claro">Agendate aquí</a>
-        </div>
     </section>
 
-    <!-- Modal "Quiénes somos" -->
     <div class="overlay" id="overlay-quienes">
         <div class="comprobante quienes-modal">
             <button type="button" class="comprobante__close" id="cerrar-quienes" aria-label="Cerrar">&times;</button>
