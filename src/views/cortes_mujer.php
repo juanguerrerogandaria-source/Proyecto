@@ -74,6 +74,8 @@ $cortes   = get_cortes_por_categoria('mujer');
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
+        <button class="btn btn--ghost" onclick="window.location.href='cortes_hombre.php'">Ver cortes de hombre</button>
+        <button class="btn btn--ghost" onclick="window.location.href='index.php#servicios'">Volver a servicios</button>
     </div>
 
     <footer>

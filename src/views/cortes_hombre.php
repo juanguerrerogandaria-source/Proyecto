@@ -74,6 +74,8 @@ $cortes   = get_cortes_por_categoria('hombre');
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
+        <button class="btn btn--ghost" onclick="window.location.href='cortes_mujer.php'">Ver cortes de mujer</button>
+        <button class="btn btn--ghost" onclick="window.location.href='index.php#servicios'">Volver a servicios</button>
     </div>
 
     <footer>
@@ -84,5 +86,6 @@ $cortes   = get_cortes_por_categoria('hombre');
         <p>&copy; <?= date('Y') ?> Tuya's Barber. Todos los derechos reservados.</p>
     </footer>
 
+    
 </body>
 </html>
