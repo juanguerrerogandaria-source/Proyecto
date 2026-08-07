@@ -1,13 +1,11 @@
 <?php
 require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../database/db.php';
-requerir_rol('super_admin'); // solo super_admin puede entrar
+requerir_rol('super_admin'); 
 
 $messages = [];
 $success  = false;
 
-// Alta de administradores: única vía para crear cuentas con rol 'admin'.
-// El registro público (registrarse.php) ya no permite elegir rol.
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $usuario          = trim($_POST["usuario"] ?? "");
     $email            = trim($_POST["email"] ?? "");
