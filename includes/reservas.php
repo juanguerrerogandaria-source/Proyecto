@@ -1,6 +1,4 @@
-<?php
-// includes/reservas.php
-// Funciones relacionadas a las reservas de turnos
+    <?php
 
 function obtener_horas_ocupadas(string $fecha): array
 {
@@ -37,9 +35,9 @@ function get_all_reservas(): array
         "SELECT r.id, r.codigo, r.nombre_cliente, r.email_cliente, r.telefono_cliente,
                 r.fecha, r.hora, r.notas, r.metodo_pago, r.monto, r.estado,
                 c.nombre AS corte_nombre, c.categoria AS corte_categoria
-         FROM reservas r
-         LEFT JOIN cortes c ON c.id = r.corte_id
-         ORDER BY r.fecha DESC, r.hora DESC"
+        FROM reservas r
+        LEFT JOIN cortes c ON c.id = r.corte_id
+        ORDER BY r.fecha DESC, r.hora DESC"
     );
 
     if (!$resultado) {

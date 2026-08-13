@@ -403,12 +403,12 @@ function get_mejor_oferta_activa(): ?array
         $hoy = date('Y-m-d');
         $stmt = $conexion->prepare(
             "SELECT id, titulo, descuento_porcentaje
-             FROM ofertas
-             WHERE activa = 1
-               AND (fecha_inicio IS NULL OR fecha_inicio <= ?)
-               AND (fecha_fin IS NULL OR fecha_fin >= ?)
-             ORDER BY descuento_porcentaje DESC
-             LIMIT 1"
+            FROM ofertas
+            WHERE activa = 1
+                AND (fecha_inicio IS NULL OR fecha_inicio <= ?)
+                AND (fecha_fin IS NULL OR fecha_fin >= ?)
+            ORDER BY descuento_porcentaje DESC
+            LIMIT 1"
         );
         $stmt->bind_param("ss", $hoy, $hoy);
         $stmt->execute();
@@ -464,12 +464,50 @@ function crear_reserva_flow(
 
         $stmt = $conexion->prepare(
             "INSERT INTO reservas (codigo, nombre_cliente, email_cliente, telefono_cliente, corte_id, fecha, hora, notas, metodo_pago, monto)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
         );
         $stmt->bind_param(
             "ssssissssd",
             $codigo, $nombre_cliente, $email_cliente, $telefono_cliente, $corte_id, $fecha, $hora, $notas, $metodo_pago, $monto
         );
+
+        return $stmt->execute();
+    } finally {
+        $conexion->close();
+    }
+}
+
+function get_all_reservas(): array
+{
+    $conexion = get_db_connection();
+
+    try {
+        $resultado = $conexion->query(
+            "SELECT r.id, r.codigo, r.nombre_cliente, r.email_cliente, r.telefono_cliente,
+                    r.fecha, r.hora, r.notas, r.metodo_pago, r.monto, r.estado,
+                    c.nombre AS corte_nombre, c.categoria AS corte_categoria
+            FROM reservas r
+            LEFT JOIN cortes c ON c.id = r.corte_id
+            ORDER BY r.fecha DESC, r.hora DESC"
+        );
+
+        return $resultado->fetch_all(MYSQLI_ASSOC);
+    } finally {
+        $conexion->close();
+    }
+}
+
+function update_estado_reserva(int $id, string $estado): bool
+{
+    if (!in_array($estado, ['pendiente', 'confirmada', 'cancelada'], true)) {
+        return false;
+    }
+
+    $conexion = get_db_connection();
+
+    try {
+        $stmt = $conexion->prepare("UPDATE reservas SET estado = ? WHERE id = ?");
+        $stmt->bind_param("si", $estado, $id);
 
         return $stmt->execute();
     } finally {

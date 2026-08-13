@@ -5,7 +5,6 @@ error_reporting(E_ALL);
 
 require_once __DIR__ . '/../../database/db.php';
 require_once __DIR__ . '/../../includes/auth.php';
-require_once __DIR__ . '/../../includes/reservas.php';
 
 requerir_rol('admin'); // admin y super_admin pueden entrar
 
