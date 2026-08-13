@@ -100,6 +100,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <h3>Usuarios y Roles</h3>
                 <p>Modificá el rol de cualquier usuario registrado.</p>
             </a>
+
+            <a class="tarjeta-acceso" href="gestionar_reservas.php">
+                <span class="tarjeta-acceso__icono">&#128197;</span>
+                <h3>Turnos Agendados</h3>
+                <p>Mirá el detalle completo de cada reserva y confirmá o cancelá turnos.</p>
+            </a>
         </div>
 
         <div class="card-form">

@@ -255,9 +255,6 @@ function delete_oferta(int $id): bool
     }
 }
 
-// ------------------------------------------------------------------
-// Reservas de turnos
-// ------------------------------------------------------------------
 
 function get_corte_por_id(int $id): ?array
 {
@@ -291,7 +288,7 @@ function create_reserva(
     try {
         $stmt = $conexion->prepare(
             "INSERT INTO reservas (codigo, nombre_cliente, email_cliente, telefono_cliente, corte_id, fecha, hora, notas)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
         );
         $stmt->bind_param(
             "ssssisss",
@@ -304,11 +301,7 @@ function create_reserva(
     }
 }
 
-// ------------------------------------------------------------------
-// Flujo de reserva en pasos (horarios disponibles, ofertas, email)
-// ------------------------------------------------------------------
 
-// Devuelve las horas ya reservadas para una fecha, en formato HH:MM
 function obtener_horas_ocupadas(string $fecha): array
 {
     $conexion = get_db_connection();
@@ -322,7 +315,6 @@ function obtener_horas_ocupadas(string $fecha): array
         $horas = [];
 
         while ($fila = $resultado->fetch_assoc()) {
-            // normalizamos a HH:MM por si MySQL devuelve HH:MM:SS
             $horas[] = substr($fila['hora'], 0, 5);
         }
 
@@ -332,12 +324,10 @@ function obtener_horas_ocupadas(string $fecha): array
     }
 }
 
-// Devuelve el horario de atención (apertura, cierre, cerrado) para una fecha concreta,
-// usando la tabla `horarios` que administra el panel de admin.
+
 function get_horario_para_fecha(string $fecha): ?array
 {
-    // Comparamos por las primeras letras sin acento (mie, sab) para que funcione
-    // aunque los nombres de los días se hayan guardado con problemas de codificación.
+  
     $dias = [1 => 'lun', 2 => 'mar', 3 => 'mie', 4 => 'jue', 5 => 'vie', 6 => 'sab', 7 => 'dom'];
     $clave = $dias[(int) date('N', strtotime($fecha))] ?? null;
 
@@ -351,14 +341,14 @@ function get_horario_para_fecha(string $fecha): ?array
         $resultado = $conexion->query("SELECT dia, hora_apertura, hora_cierre, cerrado FROM horarios");
 
         while ($fila = $resultado->fetch_assoc()) {
-            // Nos quedamos solo con letras a-z: "Miércoles" -> "mircoles", "Sábado" -> "sbado"
+            
             $normalizado = strtolower(preg_replace('/[^a-zA-Z]/', '', $fila['dia']));
 
             if ($normalizado === '') {
                 continue;
             }
 
-            // Identificamos el día por sus primeras letras (sin depender de los acentos)
+            
             $claveFila = match (true) {
                 str_starts_with($normalizado, 'lu')  => 'lun',
                 str_starts_with($normalizado, 'ma')  => 'mar',
@@ -382,8 +372,7 @@ function get_horario_para_fecha(string $fecha): ?array
     }
 }
 
-// Genera los turnos posibles (cada 1 hora) entre apertura y cierre de ese día.
-// Si el local está cerrado ese día, devuelve un array vacío.
+
 function generar_turnos_para_fecha(string $fecha): array
 {
     $horario = get_horario_para_fecha($fecha);

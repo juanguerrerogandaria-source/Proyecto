@@ -36,6 +36,11 @@ requerir_rol('admin');
                 <h3>Ofertas</h3>
                 <p>Creá promociones y descuentos por tiempo limitado.</p>
             </a>
+            <a class="tarjeta-acceso" href="gestionar_reservas.php">
+                <span class="tarjeta-acceso__icono">&#128197;</span>
+                <h3>Turnos Agendados</h3>
+                <p>Mirá el detalle completo de cada reserva y confirmá o cancelá turnos.</p>
+            </a>
         </div>
 
         <?php if (tiene_rol('super_admin')): ?>

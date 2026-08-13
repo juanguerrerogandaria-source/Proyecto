@@ -12,6 +12,7 @@ $rol      = obtener_rol();
     <link rel="stylesheet" href="../../public/css/pagina_principal.css?v=3">
     <title>Tuya's Barber</title>
     <script src="../../public/js/pagina_principal.js"></script>
+    <link rel="icon" type="image/png" href="../../public/img/tuyasbarber.jpeg">
 </head>
 <body>
 
