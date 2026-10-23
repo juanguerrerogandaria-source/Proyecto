@@ -1,9 +1,15 @@
 <?php
+    ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 // Paso 3 del flujo de reserva: datos del cliente y método de pago.
 // Acá se guarda la reserva en la base y se envía el comprobante por email.
-require_once __DIR__ . '/../../database/db.php';
+require_once __DIR__ . '/../../database/conexcion_BD.php';
 require_once __DIR__ . '/../../includes/auth.php';
+require_once __DIR__ . '/../../includes/usuarios.php';
+require_once __DIR__ . '/../../includes/reservas.php';
 require_once __DIR__ . '/../../includes/mailer.php';
+
 
 $flow = $_SESSION['flow_reserva'] ?? null;
 
@@ -32,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!in_array($metodo, ['transferencia', 'efectivo'], true)) {
         $error = 'Elegí un método de pago.';
     } else {
-        $codigo = 'TB-' . strtoupper(bin2hex(random_bytes(3)));
+        $codigo = generar_codigo_reserva($flow['fecha'], $flow['hora']);
 
         $creada = crear_reserva_flow(
             $codigo,
@@ -64,13 +70,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'monto'         => (float) $flow['monto'],
                 'notas'         => $notas,
             ];
+            // Email de "reserva recibida". Si falla, la reserva igual queda guardada.
+try {
+    $comprobante['email_enviado'] = enviar_comprobante_reserva($comprobante);
+} catch (Throwable $e) {
+    error_log('Email comprobante: ' . $e->getMessage());
+    $comprobante['email_enviado'] = false;
+}
 
-            // Envío real del comprobante por email (SMTP propio, ver includes/mailer.php)
-            $emailEnviado = enviar_comprobante_reserva($comprobante);
-
-            $_SESSION['flow_comprobante']   = $comprobante;
-            $_SESSION['flow_email_enviado'] = $emailEnviado;
-            unset($_SESSION['flow_reserva']);
+           $_SESSION['flow_comprobante'] = $comprobante;
+unset($_SESSION['flow_reserva']);
 
             header('Location: comprobante.php');
             exit;
@@ -85,9 +94,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../public/css/flow.css">
+    <link rel="stylesheet" href="../../public/css/flow.css?v=2">
     <title>Datos y pago - Tuya's Barber</title>
     <script src="../../public/js/pagos.js"></script>
+    <link rel="icon" type="image/png" href="../../public/img/tuyas_sin_fondo.png">
 </head>
 <body>
     <div class="sparkles" id="sparkles"></div>

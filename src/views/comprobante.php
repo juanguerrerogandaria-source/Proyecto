@@ -1,16 +1,13 @@
 <?php
+require_once __DIR__ . '/../../database/conexcion_BD.php';
 require_once __DIR__ . '/../../includes/auth.php';
 
-$c = $_SESSION['flow_comprobante'] ?? null;
+$comprobante = $_SESSION['flow_comprobante'] ?? null;
 
-if (!$c) {
-    header('Location: reservar.php');
+if (empty($comprobante)) {
+    header('Location: index.php');
     exit;
 }
-
-$emailEnviado = $_SESSION['flow_email_enviado'] ?? false;
-
-unset($_SESSION['flow_comprobante'], $_SESSION['flow_email_enviado']);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -18,13 +15,55 @@ unset($_SESSION['flow_comprobante'], $_SESSION['flow_email_enviado']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/css/flow.css">
-    <title>¡Turno confirmado! - Tuya's Barber</title>
-    <script src="../../public/js/comprobante.js"></script>
+    <title>Reserva confirmada - Tuya's Barber</title>
+    <link rel="icon" type="image/png" href="../../public/img/tuyas_sin_fondo.png">
+    <style>
+        .comprobante-resumen {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+            align-items: center;
+            text-align: center;
+        }
+        .comprobante-resumen li {
+            font-size: 1.05rem;
+        }
+        .comprobante-acciones {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .btn-descargar-pdf {
+            display: inline-block;
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: #fff;
+            font-weight: 600;
+            padding: .85rem 2rem;
+            border-radius: .75rem;
+            text-decoration: none;
+            transition: transform .15s ease, box-shadow .15s ease;
+            box-shadow: 0 4px 14px rgba(124, 58, 237, .35);
+        }
+        .btn-descargar-pdf:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(124, 58, 237, .45);
+        }
+    </style>
 </head>
 <body>
     <div class="sparkles" id="sparkles"></div>
 
-    <div class="flow-wrapper flow-wrapper--comprobante">
+    <div class="flow-wrapper">
+        <a href="index.php" class="flow-logo">
+            <img src="../../public/img/tuyasbarber.jpeg" alt="Tuya's Barber">
+            <span>Tuya's Barber</span>
+        </a>
+
         <div class="steps">
             <span class="step step--done">1. Corte</span>
             <span class="step step--done">2. Horario</span>
@@ -32,62 +71,30 @@ unset($_SESSION['flow_comprobante'], $_SESSION['flow_email_enviado']);
             <span class="step step--active">4. Listo</span>
         </div>
 
-        <div class="comprobante-final">
-            <div class="comprobante-final__membrete">
-                <img src="../../public/img/tuyasbarber.jpeg" alt="Tuya's Barber" class="comprobante-final__logo">
-                <span>Tuya's Barber</span>
-            </div>
+        <h2>¡Reserva <span>recibida</span>!</h2>
+        <p class="flow-sub">Código de reserva: <strong><?= htmlspecialchars($comprobante['codigo']) ?></strong></p>
 
-            <h2>¡Muchas gracias, <?= htmlspecialchars($c['nombre']) ?>!</h2>
-            <p class="comprobante-final__sub">Tu turno fue reservado con éxito.</p>
+        <ul class="comprobante-resumen">
+            <li><strong>Corte:</strong> <?= htmlspecialchars($comprobante['corte']) ?></li>
+            <li><strong>Fecha:</strong> <?= htmlspecialchars($comprobante['fecha_legible']) ?></li>
+            <li><strong>Hora:</strong> <?= htmlspecialchars($comprobante['hora']) ?> hs</li>
+            <li><strong>Método de pago:</strong> <?= htmlspecialchars($comprobante['metodo_pago']) ?></li>
+            <li><strong>Monto:</strong> $<?= number_format($comprobante['monto'], 0, ',', '.') ?></li>
+        </ul>
+        <?php if (isset($comprobante['email_enviado'])): ?>
+    <p class="flow-sub">
+        <?php if ($comprobante['email_enviado']): ?>
+            Te enviamos el comprobante a <strong><?= htmlspecialchars($comprobante['email']) ?></strong>.
+        <?php else: ?>
+            No pudimos enviarte el email, pero podés descargar el comprobante en PDF.
+        <?php endif; ?>
+    </p>
+<?php endif; ?>
 
-            <div class="comprobante-final__detalle">
-                <div>
-                    <span>Código de reserva</span>
-                    <strong><?= htmlspecialchars($c['codigo']) ?></strong>
-                </div>
-                <div>
-                    <span>Corte</span>
-                    <strong><?= htmlspecialchars($c['corte']) ?> (<?= htmlspecialchars(ucfirst($c['categoria'])) ?>)</strong>
-                </div>
-                <div>
-                    <span>Fecha</span>
-                    <strong><?= htmlspecialchars($c['fecha_legible']) ?></strong>
-                </div>
-                <div>
-                    <span>Horario</span>
-                    <strong><?= htmlspecialchars($c['hora']) ?> hs</strong>
-                </div>
-                <div>
-                    <span>Método de pago</span>
-                    <strong><?= htmlspecialchars(ucfirst($c['metodo_pago'])) ?></strong>
-                </div>
-                <?php if (!empty($c['notas'])): ?>
-                    <div>
-                        <span>Notas</span>
-                        <strong><?= htmlspecialchars($c['notas']) ?></strong>
-                    </div>
-                <?php endif; ?>
-                <div class="comprobante-final__monto">
-                    <span>Monto a pagar</span>
-                    <strong>$<?= number_format((float) $c['monto'], 0, ',', '.') ?></strong>
-                </div>
-            </div>
-
-            <?php if ($emailEnviado): ?>
-                <p class="comprobante-final__nota">📧 Te enviamos el comprobante a <strong><?= htmlspecialchars($c['email']) ?></strong>. Revisá también la carpeta de spam.</p>
-            <?php else: ?>
-                <p class="comprobante-final__nota">No pudimos enviarte el email del comprobante, así que sacale una captura o imprimilo desde acá.</p>
-            <?php endif; ?>
-
-            <p class="comprobante-final__nota">Te esperamos puntual. Ante cualquier cambio, contactanos con anticipación.</p>
-
-            <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
-                <button type="button" class="btn-volver" style="cursor:pointer; border:none; font:inherit;" onclick="window.print()">Imprimir</button>
-                <a href="index.php" class="btn-volver">Volver al inicio</a>
-            </div>
+        <div class="comprobante-acciones">
+            <a href="comprobante_pdf.php" class="btn-descargar-pdf" target="_blank">Descargar comprobante (PDF)</a>
+            <a href="index.php" class="flow-back">&larr; Volver al inicio</a>
         </div>
     </div>
-
 </body>
 </html>

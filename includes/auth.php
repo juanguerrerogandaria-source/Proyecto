@@ -60,3 +60,20 @@ function url_destino_segun_rol(string $role): string
         default       => 'index.php',
     };
 }
+
+function find_user_by_username(string $usuario): ?array
+{
+    global $conexion;
+
+    $stmt = mysqli_prepare($conexion, "SELECT * FROM usuarios WHERE usuario = ? LIMIT 1");
+    if (!$stmt) {
+        throw new RuntimeException("Error al preparar la consulta.");
+    }
+
+    mysqli_stmt_bind_param($stmt, "s", $usuario);
+    mysqli_stmt_execute($stmt);
+    $resultado = mysqli_stmt_get_result($stmt);
+    $fila = mysqli_fetch_assoc($resultado);
+
+    return $fila ?: null;
+}

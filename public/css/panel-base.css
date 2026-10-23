@@ -542,3 +542,271 @@ td input[type="time"]:disabled {
         flex-wrap: wrap;
     }
 }
+
+
+/* ---------- Gestión de barberos ---------- */
+.lista-barberos {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.tarjeta-barbero {
+    display: flex;
+    gap: 20px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 1.25rem;
+}
+
+.tarjeta-barbero--inactivo {
+    opacity: 0.6;
+}
+
+.tarjeta-barbero__foto {
+    flex: 0 0 120px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--accent, #7c3aed);
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.tarjeta-barbero__foto--inicial {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.6rem;
+    font-weight: bold;
+    color: var(--accent-light, #a855f7);
+}
+
+.tarjeta-barbero__body {
+    flex: 1;
+    min-width: 0;
+}
+
+.tarjeta-barbero__titulo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0.75rem;
+}
+
+.tarjeta-barbero__titulo h3 {
+    font-size: 1.05rem;
+}
+
+.tarjeta-barbero__proximos {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.form-barbero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 0.75rem;
+}
+
+.barbero-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.badge-activo { background-color: rgba(34, 197, 94, 0.25); color: #86efac; }
+.badge-inactivo { background-color: rgba(148, 163, 184, 0.25); color: #cbd5e1; }
+
+.barbero-horario {
+    margin-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    padding-top: 0.75rem;
+}
+
+.barbero-horario summary {
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    color: var(--accent-light, #a855f7);
+}
+
+.barbero-horario .tabla-wrapper {
+    margin: 0.75rem 0;
+}
+
+@media (max-width: 700px) {
+    .tarjeta-barbero {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tarjeta-barbero__body {
+        width: 100%;
+    }
+
+    .form-barbero {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* ---------- Estadísticas ---------- */
+.selector-periodo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 1.25rem 0 0.5rem;
+}
+
+.selector-periodo a {
+    padding: 8px 14px;
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.selector-periodo a:hover {
+    border-color: var(--accent-light, #a855f7);
+}
+
+.selector-periodo a.activo {
+    background-color: var(--accent, #7c3aed);
+    border-color: var(--accent, #7c3aed);
+}
+
+.periodo-actual {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 1rem;
+}
+
+.grid-kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.kpi {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 1rem;
+    min-width: 0;
+}
+
+.kpi--destacado {
+    border-color: var(--accent, #7c3aed);
+}
+
+.kpi__etiqueta {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.kpi__valor {
+    font-size: 1.5rem;
+    color: #ffffff;
+    overflow-wrap: anywhere;
+}
+
+.kpi__detalle {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.grid-kpis--destacados .kpi__valor {
+    color: var(--accent-light, #a855f7);
+}
+
+.grid-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 1rem;
+}
+
+.grid-stats .card-form {
+    margin: 0;
+}
+
+.fila-barra {
+    display: grid;
+    grid-template-columns: 110px 1fr 56px;
+    align-items: center;
+    column-gap: 10px;
+    row-gap: 2px;
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+
+.fila-barra--ancha {
+    grid-template-columns: 70px 1fr 80px;
+}
+
+.fila-barra__etiqueta {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.fila-barra__valor {
+    text-align: right;
+    font-weight: bold;
+}
+
+.fila-barra__extra {
+    grid-column: 2 / 4;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.fila-barra progress {
+    width: 100%;
+    height: 10px;
+    border: none;
+    border-radius: 999px;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.12);
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.fila-barra progress::-webkit-progress-bar {
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+.fila-barra progress::-webkit-progress-value {
+    background-color: var(--accent-light, #a855f7);
+    border-radius: 999px;
+}
+
+.fila-barra progress::-moz-progress-bar {
+    background-color: var(--accent-light, #a855f7);
+    border-radius: 999px;
+}
+
+@media (max-width: 800px) {
+    .grid-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .fila-barra {
+        grid-template-columns: 90px 1fr 48px;
+    }
+}

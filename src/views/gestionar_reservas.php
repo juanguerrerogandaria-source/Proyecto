@@ -3,8 +3,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once __DIR__ . '/../../database/db.php';
+require_once __DIR__ . '/../../database/conexcion_BD.php';
 require_once __DIR__ . '/../../includes/auth.php';
+require_once __DIR__ . '/../../includes/reservas.php';
 
 requerir_rol('admin'); // admin y super_admin pueden entrar
 
@@ -15,8 +16,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $id     = (int) ($_POST["id"] ?? 0);
     $estado = $_POST["estado"] ?? "";
 
+    $antes = get_reserva_por_id($id);
+
     if (update_estado_reserva($id, $estado)) {
         $mensaje = "Reserva actualizada.";
+
+        if ($antes && $antes['estado'] !== $estado && in_array($estado, ['confirmada', 'cancelada'], true)) {
+            require_once __DIR__ . '/../../includes/mailer.php';
+
+            if (enviar_estado_reserva($antes, $estado)) {
+                $mensaje .= " Se le envió un email al cliente.";
+            } else {
+                $mensaje .= " No se pudo enviar el email al cliente.";
+                $es_error = true;
+            }
+        }
     } else {
         $mensaje  = "No se pudo actualizar la reserva.";
         $es_error = true;
@@ -33,7 +47,7 @@ $es_super = tiene_rol('super_admin');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/css/<?= $es_super ? 'superadmin.css' : 'admin.css' ?>">
     <title>Gestionar Reservas - Tuya's Barber</title>
-    <link rel="icon" type="image/png" href="../../public/img/tuyasbarber.jpeg">
+    <link rel="icon" type="image/png" href="../../public/img/tuyas_sin_fondo.png">
 </head>
 <body>
     <div class="panel panel--ancho">

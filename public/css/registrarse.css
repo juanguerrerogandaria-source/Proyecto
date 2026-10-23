@@ -12,8 +12,10 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 1rem;
     font-family: Arial, sans-serif;
     position: relative;
 }
@@ -108,4 +110,33 @@ a:hover {
 
 a:active {
     color: #ffffff;
+}
+
+.password-checklist {
+    list-style: none;
+    margin: -4px 0 8px 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 13px;
+}
+.password-checklist li {
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 0.2s;
+}
+.password-checklist li::before {
+    content: '○ ';
+}
+.password-checklist li.cumple {
+    color: #4ade80;
+}
+.password-checklist li.cumple::before {
+    content: '✓ ';
+}
+.password-checklist li.falta {
+    color: #f87171;
+}
+.password-checklist li.falta::before {
+    content: '✗ ';
 }

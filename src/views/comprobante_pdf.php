@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../database/db.php';
+require_once __DIR__ . '/../../database/conexcion_BD.php';
 require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../libs/fpdf/fpdf.php';
 
@@ -10,57 +10,81 @@ if (empty($comprobante)) {
     exit;
 }
 
+// Paleta de la marca (violeta)
+$violetaR = 124; $violetaG = 58; $violetaB = 237;
+$grisR = 90; $grisG = 90; $grisB = 90;
+
 $pdf = new FPDF();
 $pdf->AddPage();
 
-$pdf->SetFont('Arial', 'B', 18);
-$pdf->Cell(0, 12, "Tuya's Barber", 0, 1, 'C');
+// Franja superior de color
+$pdf->SetFillColor($violetaR, $violetaG, $violetaB);
+$pdf->Rect(0, 0, 210, 35, 'F');
 
-$pdf->SetFont('Arial', '', 12);
-$pdf->Cell(0, 8, 'Comprobante de reserva', 0, 1, 'C');
-$pdf->Ln(6);
+// Logo (si existe en ese formato; FPDF soporta JPG, PNG y GIF)
+$logoPath = __DIR__ . '/../../public/img/tuyasbarber.jpeg';
+if (file_exists($logoPath)) {
+    $pdf->Image($logoPath, 15, 8, 20, 20);
+}
 
-$pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell(50, 8, 'Codigo:', 0, 0);
-$pdf->SetFont('Arial', '', 12);
-$pdf->Cell(0, 8, $comprobante['codigo'], 0, 1);
+$pdf->SetTextColor(255, 255, 255);
+$pdf->SetFont('Arial', 'B', 20);
+$pdf->SetXY(40, 12);
+$pdf->Cell(0, 10, "Tuya's Barber", 0, 1);
 
-$pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell(50, 8, 'Cliente:', 0, 0);
-$pdf->SetFont('Arial', '', 12);
-$pdf->Cell(0, 8, $comprobante['nombre'], 0, 1);
+$pdf->SetFont('Arial', '', 11);
+$pdf->SetXY(40, 22);
+$pdf->Cell(0, 8, 'Comprobante de reserva', 0, 1);
 
-$pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell(50, 8, 'Corte:', 0, 0);
-$pdf->SetFont('Arial', '', 12);
-$pdf->Cell(0, 8, $comprobante['corte'], 0, 1);
+// Vuelvo a texto normal para el resto del documento
+$pdf->SetTextColor(30, 30, 30);
+$pdf->SetY(45);
 
-$pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell(50, 8, 'Fecha:', 0, 0);
-$pdf->SetFont('Arial', '', 12);
-$pdf->Cell(0, 8, $comprobante['fecha_legible'], 0, 1);
+function filaComprobante($pdf, $label, $valor, $grisR, $grisG, $grisB)
+{
+    $pdf->SetFont('Arial', 'B', 11);
+    $pdf->SetTextColor($grisR, $grisG, $grisB);
+    $pdf->Cell(55, 9, $label, 0, 0);
 
-$pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell(50, 8, 'Hora:', 0, 0);
-$pdf->SetFont('Arial', '', 12);
-$pdf->Cell(0, 8, $comprobante['hora'] . ' hs', 0, 1);
+    $pdf->SetFont('Arial', '', 11);
+    $pdf->SetTextColor(20, 20, 20);
+    $pdf->Cell(0, 9, $valor, 0, 1);
+}
 
-$pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell(50, 8, 'Metodo de pago:', 0, 0);
-$pdf->SetFont('Arial', '', 12);
-$pdf->Cell(0, 8, ucfirst($comprobante['metodo_pago']), 0, 1);
+filaComprobante($pdf, 'Codigo de reserva:', $comprobante['codigo'], $grisR, $grisG, $grisB);
+filaComprobante($pdf, 'Cliente:', $comprobante['nombre'], $grisR, $grisG, $grisB);
+filaComprobante($pdf, 'Corte:', $comprobante['corte'], $grisR, $grisG, $grisB);
+filaComprobante($pdf, 'Fecha:', $comprobante['fecha_legible'], $grisR, $grisG, $grisB);
+filaComprobante($pdf, 'Hora:', $comprobante['hora'] . ' hs', $grisR, $grisG, $grisB);
+filaComprobante($pdf, 'Metodo de pago:', ucfirst($comprobante['metodo_pago']), $grisR, $grisG, $grisB);
 
-$pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell(50, 8, 'Monto:', 0, 0);
-$pdf->SetFont('Arial', '', 12);
-$pdf->Cell(0, 8, '$' . number_format($comprobante['monto'], 0, ',', '.'), 0, 1);
+$pdf->Ln(2);
+
+// Línea divisoria antes del monto
+$pdf->SetDrawColor($violetaR, $violetaG, $violetaB);
+$pdf->SetLineWidth(0.5);
+$pdf->Line(15, $pdf->GetY(), 195, $pdf->GetY());
+$pdf->Ln(4);
+
+$pdf->SetFont('Arial', 'B', 14);
+$pdf->SetTextColor($violetaR, $violetaG, $violetaB);
+$pdf->Cell(55, 10, 'Monto total:', 0, 0);
+$pdf->Cell(0, 10, '$' . number_format($comprobante['monto'], 0, ',', '.'), 0, 1);
 
 if (!empty($comprobante['notas'])) {
     $pdf->Ln(4);
-    $pdf->SetFont('Arial', 'B', 12);
+    $pdf->SetFont('Arial', 'B', 11);
+    $pdf->SetTextColor($grisR, $grisG, $grisB);
     $pdf->Cell(0, 8, 'Notas:', 0, 1);
-    $pdf->SetFont('Arial', '', 11);
+    $pdf->SetFont('Arial', '', 10);
+    $pdf->SetTextColor(20, 20, 20);
     $pdf->MultiCell(0, 6, $comprobante['notas']);
 }
+
+// Pie de página
+$pdf->SetY(-25);
+$pdf->SetFont('Arial', 'I', 8);
+$pdf->SetTextColor(140, 140, 140);
+$pdf->Cell(0, 10, "Gracias por elegir Tuya's Barber - Presenta este comprobante el dia de tu turno", 0, 0, 'C');
 
 $pdf->Output('D', 'comprobante_' . $comprobante['codigo'] . '.pdf');

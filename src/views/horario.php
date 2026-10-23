@@ -2,8 +2,10 @@
 // Paso 2 del flujo de reserva: elegir día y horario.
 // Los turnos salen de la tabla `horarios` (la que administra el admin)
 // y los ya reservados aparecen tachados.
-require_once __DIR__ . '/../../database/db.php';
+require_once __DIR__ . '/../../database/conexcion_BD.php';
 require_once __DIR__ . '/../../includes/auth.php';
+require_once __DIR__ . '/../../includes/horarios.php';
+require_once __DIR__ . '/../../includes/reservas.php';
 
 if (empty($_SESSION['flow_reserva']['corte_id'])) {
     header('Location: reservar.php');
@@ -48,7 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/css/flow.css">
     <title>Elegí tu horario - Tuya's Barber</title>
-    <script src="../../public/js/horarios.js"></script>
+    <script src="../../public/js/horarios.js" defer></script>
+    <link rel="icon" type="image/png" href="../../public/img/tuyas_sin_fondo.png">
 </head>
 <body>
     <div class="sparkles" id="sparkles"></div>
@@ -78,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <form method="get" class="flow-form" id="form-fecha">
             <label for="fecha">Fecha</label>
-            <input type="date" id="fecha" name="fecha" value="<?= htmlspecialchars($fecha) ?>" min="<?= htmlspecialchars($hoy) ?>">
+           <input type="date" id="fecha" name="fecha" value="<?= htmlspecialchars($fecha) ?>" min="<?= htmlspecialchars($hoy) ?>" onchange="this.form.submit()">
         </form>
 
         <?php if ($cerrado): ?>

@@ -1,6 +1,7 @@
 <?php
-require_once __DIR__ . '/../../database/db.php';
+require_once __DIR__ . '/../../database/conexcion_BD.php';
 require_once __DIR__ . '/../../includes/auth.php';
+require_once __DIR__ . '/../../includes/usuarios.php';
 
 $message = "";
 $success = false;
@@ -23,10 +24,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             if ($fila === null) {
                 $message = "Usuario no encontrado.";
             } elseif (password_verify($password, $fila["password"])) {
-                iniciar_sesion_usuario((int) $fila["id"], $usuario, $fila["role"]);
 
-                header('Location: ' . url_destino_segun_rol($fila["role"]));
-                exit;
+    // Si todavía no verificó su correo, lo mandamos a la pantalla del código
+    if ((int) ($fila["email_verificado"] ?? 1) === 0) {
+        $_SESSION['verificar_user_id'] = (int) $fila["id"];
+        header('Location: verificar_email.php?pendiente=1');
+        exit;
+    }
+
+    iniciar_sesion_usuario((int) $fila["id"], $usuario, $fila["role"]);
+    ...
             } else {
                 $message = "Contraseña incorrecta.";
             }
@@ -43,6 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/css/loginbarber.css">
     <title>Login - Tuya's Barber</title>
+    <link rel="icon" type="image/png" href="../../public/img/tuyas_sin_fondo.png">
 </head>
 <body>
     <?php if ($message): ?>

@@ -1,5 +1,12 @@
 <?php
-require_once __DIR__ . '/../../database/db.php';
+    ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+require_once __DIR__ . '/../../database/conexcion_BD.php';
+require_once __DIR__ . '/../../includes/auth.php';
+require_once __DIR__ . '/../../includes/usuarios.php';
+require_once __DIR__ . '/../../includes/mailer.php';
 
 $messages = [];
 $success = false;
@@ -47,12 +54,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (empty($messages)) {
         try {
-            $password_hash = password_hash($confirm_password, PASSWORD_DEFAULT);
+            $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
-            if (create_user($usuario, $email, $password_hash, $role)) {
-                header('Location: loginbarber.php?registrado=1');
-                exit;
-            } else {
+            if (create_user($usuario, $email, $password_hash, $role, false)) {
+    $nuevoId = (int) mysqli_insert_id($conexion);
+    $codigo  = generar_codigo_verificacion($nuevoId);
+    enviar_codigo_verificacion($usuario, $email, $codigo);   // si falla, se reenvía desde la pantalla del código
+
+    $_SESSION['verificar_user_id'] = $nuevoId;
+    header('Location: verificar_email.php');
+    exit;
+} else {
                 $messages[] = "Error al registrar el usuario.";
             }
         } catch (RuntimeException $e) {
@@ -60,6 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -68,6 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/css/registrarse.css">
     <title>Registrarse - Tuya's Barber</title>
+    <link rel="icon" type="image/png" href="../../public/img/tuyas_sin_fondo.png">
 </head>
 <body>
     <?php if (!empty($messages)): ?>
@@ -87,8 +101,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <label for="email">Correo Electrónico:</label>
         <input type="email" id="email" name="email" placeholder="correo@ejemplo.com" required>
 
-        <label for="password">Contraseña:</label>
-        <input type="password" id="password" name="password" placeholder="Mínimo 6 caracteres" required minlength="6">
+       <label for="password">Contraseña:</label>
+       <input type="password" id="password" name="password" placeholder="Mínimo 6 caracteres" required minlength="6">
+       <ul id="password-checklist" class="password-checklist">
+        <li id="req-length">Mínimo 6 caracteres</li>
+        <li id="req-mayus">Una letra mayúscula</li>
+        <li id="req-minus">Una letra minúscula</li>
+        <li id="req-numero">Un número</li>
+        <li id="req-especial">Un carácter especial</li>
+        </ul>
 
         <label for="confirm_password">Confirmar Contraseña:</label>
         <input type="password" id="confirm_password" name="confirm_password" placeholder="Repetí tu contraseña" required minlength="6">
@@ -97,5 +118,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <button type="submit">Registrarse</button>
     </form>
+    <script>
+    const passwordInput = document.getElementById('password');
+    const reqs = {
+        length:  { el: document.getElementById('req-length'),  test: v => v.length >= 6 },
+        mayus:   { el: document.getElementById('req-mayus'),   test: v => /[A-Z]/.test(v) },
+        minus:   { el: document.getElementById('req-minus'),   test: v => /[a-z]/.test(v) },
+        numero:  { el: document.getElementById('req-numero'),  test: v => /[0-9]/.test(v) },
+        especial:{ el: document.getElementById('req-especial'),test: v => /[^a-zA-Z0-9]/.test(v) },
+    };
+
+    passwordInput.addEventListener('input', function () {
+        const valor = this.value;
+        for (const key in reqs) {
+            const cumple = reqs[key].test(valor);
+            reqs[key].el.classList.toggle('cumple', cumple);
+            reqs[key].el.classList.toggle('falta', !cumple);
+        }
+    });
+</script>
 </body>
 </html>

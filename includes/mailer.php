@@ -4,7 +4,10 @@
 // Habla el protocolo SMTP directamente: EHLO -> STARTTLS -> AUTH LOGIN -> MAIL FROM -> RCPT TO -> DATA.
 // Funciona con Gmail usando una contraseña de aplicación (ver includes/config.php).
 
-require_once __DIR__ . '/config.php';
+$archivoConfig = __DIR__ . '/config.php';
+if (is_file($archivoConfig)) {
+    require_once $archivoConfig;
+}
 
 /**
  * Envía un email. Devuelve true si salió bien, false si no.
@@ -170,45 +173,139 @@ function codificar_asunto(string $texto): string
 // ---------------------------------------------------------------
 
 // Arma el HTML del comprobante y lo manda al cliente. Devuelve true/false.
+// ---------------------------------------------------------------
+// Plantilla de los emails (estilo de la página)
+// ---------------------------------------------------------------
+
+function email_filas(array $pares): string
+{
+    $html = '';
+    foreach ($pares as [$etiqueta, $valor]) {
+        $html .= '<tr>'
+            . '<td style="padding:11px 0; border-bottom:1px solid #26232d; color:#b0a8b8; font-size:13px;">' . htmlspecialchars($etiqueta) . '</td>'
+            . '<td align="right" style="padding:11px 0; border-bottom:1px solid #26232d; color:#f5f0f5; font-size:14px; font-weight:bold;">' . htmlspecialchars($valor) . '</td>'
+            . '</tr>';
+    }
+    return $html;
+}
+
+function email_plantilla(string $titulo, string $colorTitulo, string $mensaje, array $pares, string $extra = '', string $pie = ''): string
+{
+    $logo   = 'https://tuyasbarber.kesug.com/public/img/logo_email.jpg';
+    $fuente = 'font-family:Arial,Helvetica,sans-serif;';
+
+    return '
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0a0a0c;">
+  <tr><td align="center" style="padding:24px 12px;">
+    <table role="presentation" width="520" cellpadding="0" cellspacing="0" border="0" style="width:100%; max-width:520px; background:#121116; border:1px solid #3b2a5c; border-radius:16px;">
+      <tr><td align="center" style="background:#000000; padding:26px 20px 18px; border-radius:16px 16px 0 0;">
+        <img src="' . $logo . '" width="88" height="88" alt="Tuya&#39;s Barber" style="display:block; border:2px solid #a855f7; border-radius:50%;">
+        <div style="margin-top:12px; font-family:Georgia,serif; font-size:22px; letter-spacing:2px; color:#f5f0f5; font-variant:small-caps;">Tuya&#39;s Barber</div>
+      </td></tr>
+      <tr><td style="height:3px; line-height:3px; font-size:0; background:#7c3aed;">&nbsp;</td></tr>
+      <tr><td style="padding:28px 28px 8px; ' . $fuente . '">
+        <h1 style="margin:0 0 8px; font-size:22px; color:' . $colorTitulo . ';">' . htmlspecialchars($titulo) . '</h1>
+        <p style="margin:0 0 20px; font-size:14px; line-height:1.5; color:#b0a8b8;">' . htmlspecialchars($mensaje) . '</p>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid #26232d;">' . email_filas($pares) . '</table>
+        ' . $extra . '
+      </td></tr>
+      <tr><td align="center" style="padding:20px 28px 28px; ' . $fuente . ' font-size:12px; line-height:1.5; color:#756c80;">' . htmlspecialchars($pie) . '</td></tr>
+    </table>
+  </td></tr>
+</table>';
+}
+
+// ---------------------------------------------------------------
+// Reserva recibida (al reservar)
+// ---------------------------------------------------------------
+
 function enviar_comprobante_reserva(array $r): bool
 {
-    $filas = '';
-
-    $agregar = function (string $etiqueta, string $valor) use (&$filas) {
-        $filas .= '<tr>'
-            . '<td style="padding:8px 0; color:#888; font-size:13px;">' . htmlspecialchars($etiqueta) . '</td>'
-            . '<td style="padding:8px 0; color:#222; font-size:14px; font-weight:bold; text-align:right;">' . htmlspecialchars($valor) . '</td>'
-            . '</tr>';
-    };
-
-    $agregar('Código de reserva', $r['codigo']);
-    $agregar('Cliente', $r['nombre']);
-    $agregar('Corte', $r['corte'] . ' (' . ucfirst($r['categoria']) . ')');
-    $agregar('Fecha', $r['fecha_legible']);
-    $agregar('Hora', $r['hora'] . ' hs');
-    $agregar('Método de pago', ucfirst($r['metodo_pago']));
+    $pares = [
+        ['Código de reserva', $r['codigo']],
+        ['Cliente', $r['nombre']],
+        ['Corte', $r['corte'] . ' (' . ucfirst($r['categoria']) . ')'],
+        ['Fecha', $r['fecha_legible']],
+        ['Hora', $r['hora'] . ' hs'],
+        ['Método de pago', ucfirst($r['metodo_pago'])],
+    ];
     if (!empty($r['notas'])) {
-        $agregar('Notas', $r['notas']);
+        $pares[] = ['Notas', $r['notas']];
     }
 
-    $html = '
-    <div style="background:#f4f4f4; padding:24px; font-family:Arial,sans-serif;">
-      <div style="max-width:480px; margin:0 auto; background:#fff; border-radius:12px; overflow:hidden; border:1px solid #e5e5e5;">
-        <div style="background:#111; padding:20px; text-align:center;">
-          <span style="color:#a855f7; font-size:20px; font-weight:bold; letter-spacing:1px;">Tuya&#39;s Barber</span>
-        </div>
-        <div style="padding:24px;">
-          <h2 style="margin:0 0 4px; color:#222;">¡Turno confirmado!</h2>
-          <p style="margin:0 0 20px; color:#666; font-size:14px;">Hola ' . htmlspecialchars($r['nombre']) . ', tu reserva quedó registrada. Guardá este comprobante.</p>
-          <table style="width:100%; border-collapse:collapse; border-top:1px solid #eee;">' . $filas . '</table>
-          <div style="margin-top:16px; padding:14px; background:#f7f2ff; border-radius:8px; text-align:center;">
-            <span style="color:#666; font-size:13px;">Monto a pagar</span><br>
-            <span style="color:#7c3aed; font-size:24px; font-weight:bold;">$' . number_format((float) $r['monto'], 0, ',', '.') . '</span>
-          </div>
-          <p style="margin:20px 0 0; color:#999; font-size:12px; text-align:center;">Te esperamos puntual. Ante cualquier cambio, avisanos con anticipación.</p>
-        </div>
-      </div>
-    </div>';
+    $monto = '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:20px;">'
+        . '<tr><td align="center" style="background:#1b1424; border:1px solid #3b2a5c; border-radius:10px; padding:14px;">'
+        . '<div style="font-size:13px; color:#b0a8b8;">Monto a pagar</div>'
+        . '<div style="font-size:26px; font-weight:bold; color:#a855f7;">$' . number_format((float) $r['monto'], 0, ',', '.') . '</div>'
+        . '</td></tr></table>';
+
+    $html = email_plantilla(
+        '¡Reserva recibida!',
+        '#a855f7',
+        'Hola ' . $r['nombre'] . ', recibimos tu reserva y quedó pendiente de confirmación. Te avisaremos por email cuando la confirmemos. Guardá este comprobante.',
+        $pares,
+        $monto,
+        "Ante cualquier cambio, avisanos con anticipación.\nTuya's Barber · tuyasbarber.kesug.com"
+    );
 
     return enviar_email($r['email'], "Comprobante de reserva {$r['codigo']} - Tuya's Barber", $html);
+}
+
+// ---------------------------------------------------------------
+// Turno confirmado / cancelado (desde el panel)
+// ---------------------------------------------------------------
+
+function enviar_estado_reserva(array $r, string $estado): bool
+{
+    if (empty($r['email_cliente']) || !filter_var($r['email_cliente'], FILTER_VALIDATE_EMAIL)) {
+        return false;
+    }
+
+    $meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    [$anio, $mes, $dia] = explode('-', $r['fecha']);
+    $fecha = (int) $dia . ' de ' . $meses[(int) $mes - 1] . ' de ' . $anio;
+    $hora  = substr($r['hora'], 0, 5);
+
+    $confirmada = ($estado === 'confirmada');
+    $titulo  = $confirmada ? '¡Tu turno fue confirmado!' : 'Tu turno fue cancelado';
+    $mensaje = $confirmada
+        ? 'tu reserva está confirmada. Te esperamos puntual.'
+        : 'lamentablemente tuvimos que cancelar tu reserva. Podés reservar otro horario cuando quieras desde nuestra web.';
+    $asunto  = ($confirmada ? 'Turno confirmado' : 'Turno cancelado') . " {$r['codigo']} - Tuya's Barber";
+
+    $html = email_plantilla(
+        $titulo,
+        $confirmada ? '#4ade80' : '#f87171',
+        'Hola ' . $r['nombre_cliente'] . ', ' . $mensaje,
+        [
+            ['Código de reserva', $r['codigo']],
+            ['Corte', ($r['corte_nombre'] ?? '—') . ' (' . ucfirst($r['corte_categoria'] ?? '') . ')'],
+            ['Fecha', $fecha],
+            ['Hora', $hora . ' hs'],
+        ],
+        '',
+        "Tuya's Barber · tuyasbarber.kesug.com"
+    );
+
+    return enviar_email($r['email_cliente'], $asunto, $html);
+}
+
+function enviar_codigo_verificacion(string $nombre, string $email, string $codigo): bool
+{
+    $caja = '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:20px;">'
+        . '<tr><td align="center" style="background:#1b1424; border:1px solid #3b2a5c; border-radius:10px; padding:18px;">'
+        . '<div style="font-size:13px; color:#b0a8b8; margin-bottom:6px;">Tu código de verificación</div>'
+        . '<div style="font-family:\'Courier New\',monospace; font-size:34px; font-weight:bold; letter-spacing:8px; color:#a855f7;">' . htmlspecialchars($codigo) . '</div>'
+        . '</td></tr></table>';
+
+    $html = email_plantilla(
+        'Verificá tu correo',
+        '#f5f0f5',
+        'Hola ' . $nombre . ', para terminar de crear tu cuenta ingresá este código en la página. Vence en 15 minutos.',
+        [],
+        $caja,
+        "Si no creaste una cuenta en Tuya's Barber, ignorá este mensaje."
+    );
+
+    return enviar_email($email, "Tu código de verificación es $codigo - Tuya's Barber", $html);
 }

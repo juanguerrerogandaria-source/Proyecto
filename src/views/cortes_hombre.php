@@ -1,6 +1,11 @@
 <?php
-require_once __DIR__ . '/../../database/db.php';
+    ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+require_once __DIR__ . '/../../database/conexcion_BD.php';
 require_once __DIR__ . '/../../includes/auth.php';
+require_once __DIR__ . '/../../includes/cortes.php';
 
 $logueado = esta_logueado();
 $cortes   = get_cortes_por_categoria('hombre');
@@ -10,33 +15,42 @@ $cortes   = get_cortes_por_categoria('hombre');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../public/css/pagina_principal.css?v=3">
+    <link rel="stylesheet" href="../../public/css/pagina_principal.css?v=4">
     <title>Cortes de Hombre - Tuya's Barber</title>
+    <link rel="icon" type="image/png" href="../../public/img/tuyas_sin_fondo.png">
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="container">
-            <a href="index.php" class="navbar__brand">
-                <img src="../../public/img/tuyasbarber.jpeg" alt="Tuya's Barber">
-                Tuya's Barber
-            </a>
-            <div class="navbar__links">
-                <a href="index.php#servicios">Servicios</a>
-                <a href="cortes_mujer.php">Cortes de Mujer</a>
+   <nav class="navbar navbar--menu">
+    <div class="container">
+        <a href="index.php" class="navbar__brand">
+            <img src="../../public/img/tuyasbarber.jpeg" alt="Tuya's Barber">
+            Tuya's Barber
+        </a>
 
-                <?php if ($logueado): ?>
-                    <?php if (tiene_rol('admin')): ?>
-                        <a href="admin_dashboard.php">Panel</a>
-                    <?php endif; ?>
-                    <span class="btn btn--ghost">Hola, <?= htmlspecialchars($_SESSION['usuario']) ?></span>
-                <?php else: ?>
-                    <a href="loginbarber.php" class="btn btn--ghost">Iniciar sesión</a>
-                    <a href="registrarse.php" class="btn btn--primary">Reservá tu turno</a>
+        <button type="button" class="navbar__toggle" id="navbar-toggle"
+                aria-label="Abrir menú" aria-expanded="false" aria-controls="navbar-links">
+            <span></span><span></span><span></span>
+        </button>
+
+        <div class="navbar__links" id="navbar-links">
+            <a href="index.php#servicios">Servicios</a>
+            <a href="cortes_mujer.php">Cortes de Mujer</a>
+
+            <?php if ($logueado): ?>
+                <?php if (tiene_rol('admin')): ?>
+                    <a href="admin_dashboard.php">Panel</a>
                 <?php endif; ?>
-            </div>
+                <a href="mis_turnos.php">Mis turnos</a>
+                <span class="btn btn--ghost">Hola, <?= htmlspecialchars($_SESSION['usuario']) ?></span>
+                <a href="logout.php" class="btn btn--ghost">Cerrar sesión</a>
+            <?php else: ?>
+                <a href="loginbarber.php" class="btn btn--ghost">Iniciar sesión</a>
+                <a href="registrarse.php" class="btn btn--primary">Reservá tu turno</a>
+            <?php endif; ?>
         </div>
-    </nav>
+    </div>
+</nav>
 
     <header class="page-header">
         <p class="hero__eyebrow">Para hombre</p>
@@ -85,7 +99,24 @@ $cortes   = get_cortes_por_categoria('hombre');
         </a>
         <p>&copy; <?= date('Y') ?> Tuya's Barber. Todos los derechos reservados.</p>
     </footer>
-
+ 
+    <script>
+(function () {
+    var toggle = document.getElementById('navbar-toggle');
+    var links  = document.getElementById('navbar-links');
+    if (!toggle || !links) return;
+    toggle.addEventListener('click', function () {
+        var abierto = links.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+    });
+    links.addEventListener('click', function (e) {
+        if (e.target.closest('a')) {
+            links.classList.remove('is-open');
+            toggle.setAttribute('aria-expanded', 'false');
+        }
+    });
+})();
+</script>
     
 </body>
 </html>

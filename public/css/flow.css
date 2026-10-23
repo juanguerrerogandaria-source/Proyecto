@@ -379,3 +379,31 @@ h2 span { color: #a855f7; }
     .horarios-grid { grid-template-columns: repeat(2, 1fr); }
     .pago-grid { grid-template-columns: 1fr; }
 }
+
+.flow-form input[type="text"],
+.flow-form input[type="email"],
+.flow-form input[type="tel"] {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid rgba(168, 85, 247, 0.35);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    font-size: 0.95rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.flow-form input[type="text"]::placeholder,
+.flow-form input[type="email"]::placeholder,
+.flow-form input[type="tel"]::placeholder {
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.flow-form input[type="text"]:focus,
+.flow-form input[type="email"]:focus,
+.flow-form input[type="tel"]:focus {
+    border-color: #a855f7;
+    background-color: rgba(255, 255, 255, 0.1);
+}

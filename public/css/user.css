@@ -1,26 +1,35 @@
 @import url('panel-base.css');
 
-table.historial { 
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px; 
+/* Tabla de historial de turnos */
+.panel table.historial th {
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.6);
 }
 
-table.historial th, table.historial td {
-    padding: 10px; 
-    border: 1px solid #ddd; 
-    text-align: left; 
+.panel table.historial th,
+.panel table.historial td {
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-table.historial th {
-    background-color: #f4f4f4;
+.panel table.historial td {
+    color: #ffffff;
 }
-.estado-pendiente   {
-    color: #b58900; 
-    font-weight: bold; }
 
-.estado-confirmada { color: #268bd2; 
-    font-weight: bold; }
+/* Colores de estado (legibles sobre fondo oscuro) */
+.panel .estado-pendiente  { color: #fbbf24; font-weight: bold; }
+.panel .estado-confirmada { color: #60a5fa; font-weight: bold; }
+.panel .estado-cancelada  { color: #f87171; font-weight: bold; }
 
-.estado-cancelada  { color: #dc322f; 
-    font-weight: bold; }
+/* Botón secundario */
+.btn-secundario {
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    text-decoration: none;
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+}

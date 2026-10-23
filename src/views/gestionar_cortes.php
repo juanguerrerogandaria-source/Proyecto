@@ -1,6 +1,11 @@
 <?php
-require_once __DIR__ . '/../../database/db.php';
+    ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+    
+require_once __DIR__ . '/../../database/conexcion_BD.php';
 require_once __DIR__ . '/../../includes/auth.php';
+require_once __DIR__ . '/../../includes/cortes.php';
 
 requerir_rol('admin'); // admin y super_admin pueden entrar
 
@@ -108,6 +113,7 @@ $es_super = tiene_rol('super_admin');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/css/<?= $es_super ? 'superadmin.css' : 'admin.css' ?>">
     <title>Gestionar Cortes - Tuya's Barber</title>
+    <link rel="icon" type="image/png" href="../../public/img/tuyas_sin_fondo.png">
 </head>
 <body>
     <div class="panel panel--ancho">

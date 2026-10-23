@@ -9,38 +9,45 @@ $rol      = obtener_rol();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../public/css/pagina_principal.css?v=3">
+    <link rel="stylesheet" href="../../public/css/pagina_principal.css?v=5">
     <title>Tuya's Barber</title>
     <script src="../../public/js/pagina_principal.js"></script>
-    <link rel="icon" type="image/png" href="../../public/img/tuyasbarber.jpeg">
+    <link rel="icon" type="image/png" href="../../public/img/tuyas_sin_fondo.png">
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="container">
-            <a href="index.php" class="navbar__brand">
-                <img src="../../public/img/tuyasbarber.jpeg" alt="Tuya's Barber">
-                Tuya's Barber
-            </a>
-            <div class="navbar__links">
-                <a href="#quienes-somos">Quiénes somos</a>
-                <a href="#servicios">Servicios</a>
-                <a href="#horarios">Horarios</a>
+    <nav class="navbar navbar--menu">
+    <div class="container">
+        <a href="index.php" class="navbar__brand">
+            <img src="../../public/img/tuyasbarber.jpeg" alt="Tuya's Barber">
+            Tuya's Barber
+        </a>
 
-                <?php if ($logueado): ?>
-                    <?php if (tiene_rol('admin')): ?>
-                        <a href="admin_dashboard.php">Panel</a>
-                    <?php endif; ?>
-                    <span class="btn btn--ghost">Hola, <?= htmlspecialchars($_SESSION['usuario']) ?></span>
-                    <a href="reservar.php" class="btn btn--primary">Reservá tu turno</a>
-                <?php else: ?>
-                    <a href="loginbarber.php" class="btn btn--ghost">Iniciar sesión</a>
-                    <a href="registrarse.php" class="btn btn--primary">Registrarte</a>
+        <button type="button" class="navbar__toggle" id="navbar-toggle"
+                aria-label="Abrir menú" aria-expanded="false" aria-controls="navbar-links">
+            <span></span><span></span><span></span>
+        </button>
+
+        <div class="navbar__links" id="navbar-links">
+            <a href="#quienes-somos">Quiénes somos</a>
+            <a href="#servicios">Servicios</a>
+            <a href="#horarios">Horarios</a>
+
+            <?php if ($logueado): ?>
+                <?php if (tiene_rol('admin')): ?>
+                    <a href="admin_dashboard.php">Panel</a>
                 <?php endif; ?>
-            </div>
+                <a href="mis_turnos.php">Mis turnos</a>
+                <span class="btn btn--ghost">Hola, <?= htmlspecialchars($_SESSION['usuario']) ?></span>
+                <a href="logout.php" class="btn btn--ghost">Cerrar sesión</a>
+                <a href="reservar.php" class="btn btn--primary">Reservá tu turno</a>
+            <?php else: ?>
+                <a href="loginbarber.php" class="btn btn--ghost">Iniciar sesión</a>
+                <a href="registrarse.php" class="btn btn--primary">Registrarte</a>
+            <?php endif; ?>
         </div>
-    </nav>
-
+    </div>
+</nav>
     <section class="hero-info hero-info--sola">
         <video class="hero-video" autoplay muted loop playsinline>
             <source src="../../public/video/hero.mp4" type="video/mp4">
@@ -91,9 +98,9 @@ $rol      = obtener_rol();
             <p class="section__eyebrow">Nuestra esencia</p>
             <h2 class="section__title">Quiénes somos</h2>
             <div class="about__perfil">
-                <img src="../../public/img/santiago_tuya.jpeg" alt="Santiago Tuya" class="about__foto">
+                <img src="../../public/img/tuyas_sin_fondo.png" alt="Logo de Tuya's Barber" class="about__logo">
                 <p class="section__lead about__lead">
-                    Soy Santiago Tuya. En Tuya's Barber combinamos el oficio clásico de la barbería con una identidad propia:
+                     En Tuya's Barber combinamos el oficio clásico de la barbería con una identidad propia:
                     filo, actitud y detalle en cada corte. Hacemos cortes, barba y color, en un espacio donde cada cliente
                     construye su estilo, a su manera.
                 </p>
@@ -172,5 +179,27 @@ $rol      = obtener_rol();
         <p>&copy; <?= date('Y') ?> Tuya's Barber. Todos los derechos reservados.</p>
     </footer>
 
+        <script>
+    document.addEventListener('click', function (e) {
+        var toggle = e.target.closest('#navbar-toggle');
+        var links  = document.getElementById('navbar-links');
+        if (!links) return;
+
+        if (toggle) {
+            var abierto = links.classList.toggle('is-open');
+            toggle.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+            return;
+        }
+
+        if (e.target.closest('#navbar-links a')) {
+            links.classList.remove('is-open');
+            var btn = document.getElementById('navbar-toggle');
+            if (btn) btn.setAttribute('aria-expanded', 'false');
+        }
+    });
+    </script>
+</body>
+</html>
+    
 </body>
 </html>

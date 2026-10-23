@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../includes/auth.php';
-require_once __DIR__ . '/../../database/db.php';
+require_once __DIR__ . '/../../database/conexcion_BD.php';
 
 if (!esta_logueado()) {
     header('Location: loginbarber.php');
@@ -59,6 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../../public/css/flow.css">
     <title>Elegí tu servicio - Tuya's Barber</title>
     <script src="../../public/js/servicio.js" defer></script>
+    <link rel="icon" type="image/png" href="../../public/img/tuyas_sin_fondo.png">
 </head>
 <body>
     <div class="sparkles" id="sparkles"></div>

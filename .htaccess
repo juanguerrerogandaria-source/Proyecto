@@ -1,0 +1,16 @@
+RewriteEngine On
+
+# 1) Si alguien entra por la URL larga o por /index.php, mostrar solo "/"
+RewriteCond %{THE_REQUEST} \s/(src/views/)?index\.php [NC]
+RewriteRule ^ / [R=301,L]
+
+# 2) Cualquier otra URL larga /src/views/xxx.php se muestra como /xxx.php
+RewriteCond %{THE_REQUEST} \s/src/views/([A-Za-z0-9_]+)\.php [NC]
+RewriteRule ^ /%1.php [R=301,L]
+
+# 3) La raíz "/" sirve el index
+RewriteRule ^$ src/views/index.php [L]
+
+# 4) /xxx.php se sirve internamente desde src/views/xxx.php
+RewriteCond %{DOCUMENT_ROOT}/src/views/$1.php -f
+RewriteRule ^([A-Za-z0-9_]+)\.php$ src/views/$1.php [L]

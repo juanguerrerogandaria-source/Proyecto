@@ -1,7 +1,18 @@
 <?php
-// Paso 1 del flujo de reserva: elegir el corte (viene de la base de datos real).
-require_once __DIR__ . '/../../database/db.php';
+    
+    ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+    
+require_once __DIR__ . '/../../database/conexcion_BD.php';
 require_once __DIR__ . '/../../includes/auth.php';
+require_once __DIR__ . '/../../includes/cortes.php';
+require_once __DIR__ . '/../../includes/ofertas.php';
+
+if (!esta_logueado()) {
+    header('Location: loginbarber.php');
+    exit;
+}
 
 $cortes = get_all_cortes();
 $oferta = get_mejor_oferta_activa();
@@ -63,6 +74,7 @@ function precio_con_oferta(float $precio, ?array $oferta): float
     <link rel="stylesheet" href="../../public/css/flow.css">
     <title>Reservá tu turno - Tuya's Barber</title>
     <script src="../../public/js/reservar.js" defer></script>
+    <link rel="icon" type="image/png" href="../../public/img/tuyas_sin_fondo.png">
 </head>
 <body>
     <div class="sparkles" id="sparkles"></div>

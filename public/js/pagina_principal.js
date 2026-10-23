@@ -14,3 +14,30 @@
                 if (e.target === overlayQuienes) cerrarModalQuienes();
             });
         }
+
+(function () {
+    var toggle = document.getElementById('navbar-toggle');
+    var links  = document.getElementById('navbar-links');
+    if (!toggle || !links) return;
+
+    toggle.addEventListener('click', function () {
+        var abierto = links.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+    });
+
+    // Al tocar un link, se cierra el menú
+    links.addEventListener('click', function (e) {
+        if (e.target.closest('a')) {
+            links.classList.remove('is-open');
+            toggle.setAttribute('aria-expanded', 'false');
+        }
+    });
+})();
+
+(function () {
+    var url = new URL(window.location.href);
+    if (url.searchParams.has('i')) {
+        url.searchParams.delete('i');
+        window.history.replaceState(null, '', url.pathname + url.search + url.hash);
+    }
+})();
