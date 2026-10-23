@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../includes/auth.php';
-require_once __DIR__ . '/../../database/conexcion_BD.php';
+require_once __DIR__ . '/../../database/db.php';
 requerir_rol('user');
 
 $turnos = [];

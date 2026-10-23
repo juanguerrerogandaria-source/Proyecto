@@ -2,7 +2,7 @@
 // Paso 2 del flujo de reserva: elegir día y horario.
 // Los turnos salen de la tabla `horarios` (la que administra el admin)
 // y los ya reservados aparecen tachados.
-require_once __DIR__ . '/../../database/conexcion_BD.php';
+require_once __DIR__ . '/../../database/db.php';
 require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../includes/horarios.php';
 require_once __DIR__ . '/../../includes/reservas.php';

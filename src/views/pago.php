@@ -4,7 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 // Paso 3 del flujo de reserva: datos del cliente y método de pago.
 // Acá se guarda la reserva en la base y se envía el comprobante por email.
-require_once __DIR__ . '/../../database/conexcion_BD.php';
+require_once __DIR__ . '/../../database/db.php';
 require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../includes/usuarios.php';
 require_once __DIR__ . '/../../includes/reservas.php';
